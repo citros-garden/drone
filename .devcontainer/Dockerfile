@@ -31,6 +31,7 @@ RUN apt-get update && apt-get install -y \
   python3-pip \
   python3-vcstools \
   python3-colcon-common-extensions \
+  gazebo \
   && rm -rf /var/lib/apt/lists/* \
   && echo "source /usr/share/bash-completion/completions/git" >> /home/$USERNAME/.bashrc
 
