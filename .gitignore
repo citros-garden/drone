@@ -2,3 +2,13 @@ build/*
 install/*
 log/*
 site/*
+
+microros_ws/build/*
+microros_ws/install/*
+microros_ws/log/*
+microros_ws/site/*
+
+example_ws/build/*
+example_ws/install/*
+example_ws/log/*
+example_ws/site/*

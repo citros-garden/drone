@@ -33,3 +33,6 @@ git submodule add https://github.com/PX4/px4_msgs.git src/px4_msgs
 git submodule add https://github.com/PX4/px4_ros_com.git src/px4_ros_com
 git submodule add https://github.com/Jaeyoung-Lim/px4-offboard.git src/px4-offboard
 colcon build
+
+# Install Gazebo again
+sudo apt-get -y install gazebo
