@@ -3,12 +3,7 @@ install/*
 log/*
 site/*
 
-microros_ws/build/*
-microros_ws/install/*
-microros_ws/log/*
-microros_ws/site/*
-
-example_ws/build/*
-example_ws/install/*
-example_ws/log/*
-example_ws/site/*
+ros2_ws/build/*
+ros2_ws/install/*
+ros2_ws/log/*
+ros2_ws/site/*
