@@ -28,13 +28,20 @@ RUN apt-get update && apt-get install -y \
   default-jre \
   python3 \
   python3-setuptools \
-  python3-pip \
   python3-vcstool \
   python3-colcon-common-extensions \
   python3-rosdep \
-  gazebo \
+  mesa-utils \
+  x11-apps \
+  libcanberra-gtk* \
+  libglfw3-dev \
+  libglew-dev \
+  libgl1-mesa-glx \
+  libgl1-mesa-dri \
   && rm -rf /var/lib/apt/lists/* \
   && echo "source /usr/share/bash-completion/completions/git" >> /home/$USERNAME/.bashrc
+
+RUN usermod -a -G video dev
 
 # Set up auto-source of workspace for ros user
 ARG WORKSPACE

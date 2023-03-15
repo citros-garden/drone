@@ -9,3 +9,6 @@ git submodule update --init --recursive
 
 # Installing all PX4 deps
 PX4-Autopilot/Tools/setup/ubuntu.sh --no-nuttx
+
+# Installing Gazebo
+sudo apt-get install -y gazebo
