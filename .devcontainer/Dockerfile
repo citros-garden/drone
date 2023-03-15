@@ -38,6 +38,7 @@ RUN apt-get update && apt-get install -y \
   libglew-dev \
   libgl1-mesa-glx \
   libgl1-mesa-dri \
+  ros-humble-rosbridge-suite \
   && rm -rf /var/lib/apt/lists/* \
   && echo "source /usr/share/bash-completion/completions/git" >> /home/$USERNAME/.bashrc
 
