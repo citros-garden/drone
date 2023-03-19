@@ -1,5 +1,6 @@
 import rclpy
 import numpy as np
+import time
 from rclpy.node import Node
 from rclpy.clock import Clock
 from rclpy.qos import QoSProfile, QoSReliabilityPolicy, QoSHistoryPolicy, QoSDurabilityPolicy
@@ -39,6 +40,8 @@ class OffboardControl(Node):
         self.omega = 0.5
         self.offboard_setpoint_counter_ = 0
 
+        time.sleep(15)
+
         self.timer = self.create_timer(timer_period, self.cmdloop_callback)
  
     def vehicle_status_callback(self, msg):
@@ -49,14 +52,14 @@ class OffboardControl(Node):
         if self.offboard_setpoint_counter_ == 50:
             # Arm the vehicle
             self.arm()
-            # Change to Offboard mode after 50 setpoints (1s)
-            self.engage_offBoard_mode()
 
         # offboard_control_mode needs to be paired with trajectory_setpoint
         self.publish_offboard_control_mode()
 
         if self.nav_state == VehicleStatus.NAVIGATION_STATE_OFFBOARD:
             self.publish_trajectory_setpoint_circle()
+        else:
+            self.engage_offBoard_mode()
         self.offboard_setpoint_counter_ += 1
      
     def arm(self):

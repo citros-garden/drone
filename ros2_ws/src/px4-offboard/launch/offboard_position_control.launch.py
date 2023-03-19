@@ -12,14 +12,11 @@ import os
 def generate_launch_description():
 
     proc_px4 = ExecuteProcess(
-            cmd=[
-                    '/workspaces/citros_px4/PX4-Autopilot/build/px4_sitl_default/bin/px4',
-                    '/workspaces/citros_px4/PX4-Autopilot/ROMFS/px4fmu_common/',
-                    '-s',
-                    '/workspaces/citros_px4/PX4-Autopilot/ROMFS/px4fmu_common/init.d-posix/rcS'
-            ],
-            cwd='/tmp/px4',
-            output='screen')
+        cmd=['bash', '-c', 'cd /workspaces/citros_px4/PX4-Autopilot && HEADLESS=1 make px4_sitl gazebo'],
+        cwd='/tmp/px4',
+        output='screen',
+        emulate_tty=True
+    )
 
     node_offboard = Node(
             package='px4_offboard',
@@ -43,6 +40,6 @@ def generate_launch_description():
     bridge_dir = get_package_share_directory('rosbridge_server')
     node_rosbridge =  IncludeLaunchDescription(launch_description_sources.FrontendLaunchDescriptionSource(bridge_dir + '/launch/rosbridge_websocket_launch.xml'))
 
-    ld = LaunchDescription([node_offboard, node_dds_agent, node_rosbridge])
+    ld = LaunchDescription([proc_px4, node_offboard, node_dds_agent, node_rosbridge])
 
     return ld
