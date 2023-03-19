@@ -4,6 +4,7 @@ import time
 from rclpy.node import Node
 from rclpy.clock import Clock
 from rclpy.qos import QoSProfile, QoSReliabilityPolicy, QoSHistoryPolicy, QoSDurabilityPolicy
+import subprocess
 
 from px4_msgs.msg import OffboardControlMode
 from px4_msgs.msg import TrajectorySetpoint
@@ -39,6 +40,7 @@ class OffboardControl(Node):
         self.radius = 10.0
         self.omega = 0.5
         self.offboard_setpoint_counter_ = 0
+        self.bad_tries_to_offboard_counter_ = 0
 
         time.sleep(15)
 
@@ -58,8 +60,12 @@ class OffboardControl(Node):
 
         if self.nav_state == VehicleStatus.NAVIGATION_STATE_OFFBOARD:
             self.publish_trajectory_setpoint_circle()
-        else:
+        elif self.bad_tries_to_offboard_counter_ < 15:
             self.engage_offBoard_mode()
+            self.bad_tries_to_offboard_counter_ += 1
+        else:
+            self.get_logger().error("Couldn't get into OFFBOARD, Aborting...")
+            exit()
         self.offboard_setpoint_counter_ += 1
      
     def arm(self):
