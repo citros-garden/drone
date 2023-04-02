@@ -6,7 +6,7 @@ from rclpy.clock import Clock
 from rclpy.qos import QoSProfile, QoSReliabilityPolicy, QoSHistoryPolicy, QoSDurabilityPolicy
 import subprocess
 from enum import Enum
-
+from std_msgs.msg import String
 from px4_msgs.msg import OffboardControlMode
 from px4_msgs.msg import TrajectorySetpoint
 from px4_msgs.msg import VehicleStatus
@@ -37,7 +37,7 @@ class OffboardControl(Node):
         self.offboard_control_mode_publisher_ = self.create_publisher(OffboardControlMode, '/fmu/in/offboard_control_mode',qos_profile)
         self.trajectory_setpoint_publisher_ = self.create_publisher(TrajectorySetpoint, '/fmu/in/trajectory_setpoint',qos_profile)
         self.vehicle_command_publisher_ = self.create_publisher(VehicleCommand, '/fmu/in/vehicle_command',qos_profile)
-        
+        self.state_publisher = self.create_publisher(String, '/offboard/state', 1)
         timer_period = 0.02  # seconds
 
         self.position = None
@@ -50,6 +50,7 @@ class OffboardControl(Node):
                           "LAND": [0.0, 0.0, 0.0]}
         
         self.position_msg = TrajectorySetpoint()
+        self.offboard_state_msg = String()
         
         self.tolerance = 1.0
         self.repeats = 1
@@ -76,6 +77,7 @@ class OffboardControl(Node):
         # Arm the vehicle
         if self.offboard_setpoint_counter_ == 50:
             self.arm()
+            self.offboard_setpoint_counter_ += 1
         elif self.offboard_setpoint_counter_ < 50:
             self.offboard_setpoint_counter_ += 1
 
@@ -143,7 +145,9 @@ class OffboardControl(Node):
         current_position = [x, y, z]
         current_setpoint = self.setpoints[self.state.name]
 
-        distance = np.linalg.norm([p1 - p2 for p1,p2 in zip(current_position, current_setpoint)])
+        distance = np.linalg.norm([abs(p1) - abs(p2) for p1,p2 in zip(current_position, current_setpoint)])
+
+        self.get_logger().info(f"distance = {distance}", throttle_duration_sec=0.25)
 
         if distance < self.tolerance and self.state == State.P1:
             self.state = State.P2
@@ -164,7 +168,13 @@ class OffboardControl(Node):
         self.position_msg.position[1] = current_setpoint[1]
         self.position_msg.position[2] = current_setpoint[2]
         self.position_msg.timestamp = int(Clock().now().nanoseconds / 1000)
+
+        self.offboard_state_msg.data = self.state.name
+
         self.trajectory_setpoint_publisher_.publish(self.position_msg)
+        self.state_publisher.publish(self.offboard_state_msg)
+
+        self.get_logger().info(f"State = {self.state.name}", throttle_duration_sec=1.0)
 
     def publish_vehicle_command(self, msg):
         msg.timestamp = int(Clock().now().nanoseconds / 1000)

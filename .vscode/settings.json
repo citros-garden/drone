@@ -37,9 +37,9 @@
         "**/log": true
     },
     "cSpell.words": [
-        "RTPS",
         "athackst",
         "autopep",
+        "citros",
         "cmake",
         "cppcheck",
         "cpplint",
@@ -52,10 +52,12 @@
         "rclcpp",
         "rclpy",
         "repos",
+        "rosbridge",
         "rosdep",
         "rosdistro",
         "rosidl",
         "RTPS",
+        "sitl",
         "uncrustify",
         "Wextra",
         "Wpedantic",
