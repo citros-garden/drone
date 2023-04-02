@@ -10,7 +10,7 @@ from px4_msgs.msg import OffboardControlMode
 from px4_msgs.msg import TrajectorySetpoint
 from px4_msgs.msg import VehicleStatus
 from px4_msgs.msg import VehicleCommand
-from px4_msgs.msg import VehicleControlMode
+from px4_msgs.msg import VehicleLocalPosition
 
 class OffboardControl(Node):
 
@@ -24,12 +24,14 @@ class OffboardControl(Node):
         )
 
         self.status_sub = self.create_subscription(VehicleStatus,'/fmu/out/vehicle_status',self.vehicle_status_callback, qos_profile)
-        
+        self.local_position_sub_ = self.create_subscription(VehicleLocalPosition,'/fmu/out/vehicle_local_position' ,self.local_position_callback, qos_profile)
+
         self.offboard_control_mode_publisher_ = self.create_publisher(OffboardControlMode, '/fmu/in/offboard_control_mode',qos_profile)
         self.trajectory_setpoint_publisher_ = self.create_publisher(TrajectorySetpoint, '/fmu/in/trajectory_setpoint',qos_profile)
         self.vehicle_command_publisher_ = self.create_publisher(VehicleCommand, '/fmu/in/vehicle_command',qos_profile)
         
         timer_period = 0.02  # seconds
+        self.position = None
         
         self.nav_state = VehicleStatus.NAVIGATION_STATE_MAX
         self.dt = timer_period
@@ -47,7 +49,13 @@ class OffboardControl(Node):
         # TODO: handle NED->ENU transformation
         self.nav_state = msg.nav_state
 
+    def local_position_callback(self, msg):
+        self.position = [msg.x, msg.y, msg.z]
+
     def cmdloop_callback(self):
+
+        self.get_logger().info(f"Position = {self.position[0]:.3f},{self.position[1]:.3f},{self.position[2]:.3f}")
+
         if self.offboard_setpoint_counter_ == 50:
             # Arm the vehicle
             self.arm()
