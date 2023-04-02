@@ -5,12 +5,20 @@ from rclpy.node import Node
 from rclpy.clock import Clock
 from rclpy.qos import QoSProfile, QoSReliabilityPolicy, QoSHistoryPolicy, QoSDurabilityPolicy
 import subprocess
+from enum import Enum
 
 from px4_msgs.msg import OffboardControlMode
 from px4_msgs.msg import TrajectorySetpoint
 from px4_msgs.msg import VehicleStatus
 from px4_msgs.msg import VehicleCommand
 from px4_msgs.msg import VehicleLocalPosition
+
+class State(Enum):
+    P1 = 1
+    P2 = 2
+    P3 = 3
+    P4 = 4
+    LAND = 5
 
 class OffboardControl(Node):
 
@@ -31,19 +39,31 @@ class OffboardControl(Node):
         self.vehicle_command_publisher_ = self.create_publisher(VehicleCommand, '/fmu/in/vehicle_command',qos_profile)
         
         timer_period = 0.02  # seconds
+
         self.position = None
+        self.state = State.P1
+
+        self.setpoints = {"P1": [0.0, 0.0, -5.0],
+                          "P2": [10.0, 0.0, -5.0],
+                          "P3": [10.0, 10.0, -5.0],
+                          "P4": [0.0, 10.0, -5.0],
+                          "LAND": [0.0, 0.0, 0.0]}
+        
+        self.position_msg = TrajectorySetpoint()
+        
+        self.tolerance = 1.0
+        self.repeats = 1
+        self.repeats_counter = 0
         
         self.nav_state = VehicleStatus.NAVIGATION_STATE_MAX
         self.dt = timer_period
-        self.theta = 0.0
-        self.radius = 10.0
-        self.omega = 0.5
+        
         self.offboard_setpoint_counter_ = 0
         self.bad_tries_to_offboard_counter_ = 0
 
         time.sleep(15)
 
-        self.timer = self.create_timer(timer_period, self.cmdloop_callback)
+        self.timer = self.create_timer(timer_period, self.step)
  
     def vehicle_status_callback(self, msg):
         # TODO: handle NED->ENU transformation
@@ -52,27 +72,26 @@ class OffboardControl(Node):
     def local_position_callback(self, msg):
         self.position = [msg.x, msg.y, msg.z]
 
-    def cmdloop_callback(self):
-
-        self.get_logger().info(f"Position = {self.position[0]:.3f},{self.position[1]:.3f},{self.position[2]:.3f}")
-
+    def step(self):
+        # Arm the vehicle
         if self.offboard_setpoint_counter_ == 50:
-            # Arm the vehicle
             self.arm()
+        elif self.offboard_setpoint_counter_ < 50:
+            self.offboard_setpoint_counter_ += 1
 
         # offboard_control_mode needs to be paired with trajectory_setpoint
         self.publish_offboard_control_mode()
 
         if self.nav_state == VehicleStatus.NAVIGATION_STATE_OFFBOARD:
-            self.publish_trajectory_setpoint_circle()
+            self.flow()
+
         elif self.bad_tries_to_offboard_counter_ < 15:
             self.engage_offBoard_mode()
             self.bad_tries_to_offboard_counter_ += 1
         else:
             self.get_logger().error("Couldn't get into OFFBOARD, Aborting...")
             exit()
-        self.offboard_setpoint_counter_ += 1
-     
+        
     def arm(self):
         self.get_logger().info("Arm command sent")
         msg = VehicleCommand()
@@ -115,17 +134,37 @@ class OffboardControl(Node):
         msg.from_external = True
         self.publish_vehicle_command(msg)
 
-    def publish_trajectory_setpoint_circle(self):
-        msg = TrajectorySetpoint()
-              
-        msg.position[0] = self.radius * np.cos(self.theta)
-        msg.position[1] = self.radius * np.sin(self.theta)
-        msg.position[2] = -5.0
+    def flow(self):
+
+        x = self.position[0]
+        y = self.position[0]
+        z = self.position[0]
+
+        current_position = [x, y, z]
+        current_setpoint = self.setpoints[self.state.name]
+
+        distance = np.linalg.norm([p1 - p2 for p1,p2 in zip(current_position, current_setpoint)])
+
+        if distance < self.tolerance and self.state == State.P1:
+            self.state = State.P2
+        if distance < self.tolerance and self.state == State.P2:
+            self.state = State.P3
+        if distance < self.tolerance and self.state == State.P3:
+            self.state = State.P4
+        if distance < self.tolerance and self.state == State.P4:
+            self.state = State.P1
+            self.repeats_counter += 1
+
+        if self.repeats_counter == self.repeats:
+            self.land()
+            time.sleep(10)
+            exit()
         
-        msg.timestamp = int(Clock().now().nanoseconds / 1000)
-        self.trajectory_setpoint_publisher_.publish(msg)
-        
-        self.theta = self.theta + self.omega * self.dt
+        self.position_msg.position[0] = current_setpoint[0]
+        self.position_msg.position[1] = current_setpoint[1]
+        self.position_msg.position[2] = current_setpoint[2]
+        self.position_msg.timestamp = int(Clock().now().nanoseconds / 1000)
+        self.trajectory_setpoint_publisher_.publish(self.position_msg)
 
     def publish_vehicle_command(self, msg):
         msg.timestamp = int(Clock().now().nanoseconds / 1000)
