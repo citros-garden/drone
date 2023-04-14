@@ -9,6 +9,12 @@ from launch.event_handlers import OnExecutionComplete, OnProcessExit, OnProcessI
 from launch.events import Shutdown, process
 import os
 
+offboard_parameters = os.path.join(
+    get_package_share_directory('px4_offboard'),
+    'config',
+    'params.yaml'
+    )
+
 def generate_launch_description():
 
     proc_px4 = ExecuteProcess(
@@ -20,10 +26,11 @@ def generate_launch_description():
 
     node_offboard = Node(
             package='px4_offboard',
-            namespace='px4_offboard',
+            namespace='offboard_control',
             executable='offboard_control',
             output='screen',
-            name='control',
+            name='offboard_control',
+            parameters=[offboard_parameters],
             emulate_tty=True
     )
     

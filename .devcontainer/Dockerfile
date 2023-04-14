@@ -43,7 +43,7 @@ RUN apt-get update && apt-get install -y \
   && echo "source /usr/share/bash-completion/completions/git" >> /home/$USERNAME/.bashrc
 
 RUN usermod -a -G video dev
-
+RUN apt upgrade -y ros-humble-rosidl*
 # Set up auto-source of workspace for ros user
 ARG WORKSPACE
 RUN echo "if [ -f ${WORKSPACE}/install/setup.bash ]; then source ${WORKSPACE}/install/setup.bash; fi" >> /home/ros/.bashrc
