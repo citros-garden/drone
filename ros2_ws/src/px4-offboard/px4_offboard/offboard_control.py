@@ -23,7 +23,7 @@ class State(Enum):
 class OffboardControl(Node):
 
     def __init__(self):
-        super().__init__('offboard')
+        super().__init__('offboard_control')
         qos_profile = QoSProfile(
             reliability=QoSReliabilityPolicy.RMW_QOS_POLICY_RELIABILITY_BEST_EFFORT,
             durability=QoSDurabilityPolicy.RMW_QOS_POLICY_DURABILITY_TRANSIENT_LOCAL,
@@ -45,7 +45,7 @@ class OffboardControl(Node):
                         ('p2_x', 10.0), ('p2_y', 0.0), ('p2_z', -10.0),
                         ('p3_x', 10.0), ('p3_y', 10.0), ('p3_z', -10.0),
                         ('p4_x', 0.0), ('p4_y', 10.0), ('p4_z', -10.0),
-                        ('repeats', 5), ('tolerance', 1.0), ('timer_period', 0.02),]
+                        ('repeats', 5), ('tolerance', 0.5), ('timer_period', 0.02),]
         )
 
         timer_period = self.get_parameter('timer_period').value
@@ -69,13 +69,12 @@ class OffboardControl(Node):
         self.nav_state = VehicleStatus.NAVIGATION_STATE_MAX
         self.dt = timer_period
 
-        self.get_logger().info(f"Loaded Parameters:")
-        self.get_logger().info(f"\ttolerance: {self.tolerance}, repeats: {self.repeats}")
-        
         self.offboard_setpoint_counter_ = 0
         self.bad_tries_to_offboard_counter_ = 0
 
         time.sleep(15)
+        self.get_logger().info(f"Loaded Parameters:")
+        self.get_logger().info(f"\ttolerance: {self.tolerance}, repeats: {self.repeats}")
 
         self.timer = self.create_timer(timer_period, self.step)
  
@@ -168,7 +167,7 @@ class OffboardControl(Node):
         self.trajectory_setpoint_publisher_.publish(self.position_msg)
         self.state_publisher.publish(self.offboard_state_msg)
 
-        self.get_logger().info(f"State = {self.state.name}, Position = {x:.3f},{y:.3f},{z:.3f}, distance = {distance:.3f}", throttle_duration_sec=0.25)
+        self.get_logger().info(f"State = {self.state.name}, Position = [{x:.3f}, {y:.3f}, {z:.3f}]", throttle_duration_sec=0.25)
     def publish_vehicle_command(self, msg):
         msg.timestamp = int(Clock().now().nanoseconds / 1000)
         self.vehicle_command_publisher_.publish(msg)

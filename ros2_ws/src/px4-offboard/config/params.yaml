@@ -1,5 +1,5 @@
 offboard_control:
-  ros__parameters:
+ ros__parameters:
   p1_x: 0.0  # x position [m] of point 1, NED
   p1_y: 0.0  # y position [m] of point 1, NED
   p1_z: -5.0 # z position [m] of point 1, NED
