@@ -38,26 +38,39 @@ class OffboardControl(Node):
         self.trajectory_setpoint_publisher_ = self.create_publisher(TrajectorySetpoint, '/fmu/in/trajectory_setpoint',qos_profile)
         self.vehicle_command_publisher_ = self.create_publisher(VehicleCommand, '/fmu/in/vehicle_command',qos_profile)
         self.state_publisher = self.create_publisher(String, '/offboard/state', 1)
-        timer_period = 0.02  # seconds
+
+        self.declare_parameters(
+            namespace='',
+            parameters=[('p1_x', 0.0), ('p1_y', 0.0), ('p1_z', -10.0),
+                        ('p2_x', 10.0), ('p2_y', 0.0), ('p2_z', -10.0),
+                        ('p3_x', 10.0), ('p3_y', 10.0), ('p3_z', -10.0),
+                        ('p4_x', 0.0), ('p4_y', 10.0), ('p4_z', -10.0),
+                        ('repeats', 5), ('tolerance', 1.0), ('timer_period', 0.02),]
+        )
+
+        timer_period = self.get_parameter('timer_period').value
 
         self.position = None
         self.state = State.P1
 
-        self.setpoints = {"P1": [0.0, 0.0, -5.0],
-                          "P2": [10.0, 0.0, -5.0],
-                          "P3": [10.0, 10.0, -5.0],
-                          "P4": [0.0, 10.0, -5.0],
+        self.setpoints = {"P1": [self.get_parameter('p1_x').value, self.get_parameter('p1_y').value, self.get_parameter('p1_z').value],
+                          "P2": [self.get_parameter('p2_x').value, self.get_parameter('p2_y').value, self.get_parameter('p2_z').value],
+                          "P3": [self.get_parameter('p3_x').value, self.get_parameter('p3_y').value, self.get_parameter('p3_z').value],
+                          "P4": [self.get_parameter('p4_x').value, self.get_parameter('p4_y').value, self.get_parameter('p4_z').value],
                           "LAND": [0.0, 0.0, 0.0]}
         
         self.position_msg = TrajectorySetpoint()
         self.offboard_state_msg = String()
         
-        self.tolerance = 1.0
-        self.repeats = 5
+        self.tolerance = self.get_parameter('tolerance').value
+        self.repeats = self.get_parameter('repeats').value
         self.repeats_counter = 0
         
         self.nav_state = VehicleStatus.NAVIGATION_STATE_MAX
         self.dt = timer_period
+
+        self.get_logger().info(f"Loaded Parameters:")
+        self.get_logger().info(f"\ttolerance: {self.tolerance}, repeats: {self.repeats}")
         
         self.offboard_setpoint_counter_ = 0
         self.bad_tries_to_offboard_counter_ = 0
@@ -67,7 +80,6 @@ class OffboardControl(Node):
         self.timer = self.create_timer(timer_period, self.step)
  
     def vehicle_status_callback(self, msg):
-        # TODO: handle NED->ENU transformation
         self.nav_state = msg.nav_state
 
     def local_position_callback(self, msg):
