@@ -8,12 +8,22 @@ from launch.launch_description_sources import FrontendLaunchDescriptionSource
 from launch.event_handlers import OnExecutionComplete, OnProcessExit, OnProcessIO, OnProcessStart, OnShutdown
 from launch.events import Shutdown, process
 import os
+import sys
+
+sys.path.insert(0,'/workspaces/citros_px4/ros2_ws/src/px4-offboard/launch')
+
+from rigid_body_config import  Parser as RigidBodyParser
 
 offboard_parameters = os.path.join(
     get_package_share_directory('px4_offboard'),
     'config',
     'params.yaml'
     )
+
+rigid_body_parameters_parser = RigidBodyParser()
+rigid_body_parameters_parser.parse()
+
+time.sleep(1.0)
 
 def generate_launch_description():
 
