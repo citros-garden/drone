@@ -20,7 +20,7 @@ def generate_launch_description():
 
     node_offboard = Node(
             package='px4_offboard',
-            namespace='px4_offboard',
+            namespace='offb',
             executable='offboard_control',
             output='screen',
             name='control',

@@ -53,7 +53,7 @@ class OffboardControl(Node):
         self.offboard_state_msg = String()
         
         self.tolerance = 1.0
-        self.repeats = 1
+        self.repeats = 5
         self.repeats_counter = 0
         
         self.nav_state = VehicleStatus.NAVIGATION_STATE_MAX
@@ -72,27 +72,6 @@ class OffboardControl(Node):
 
     def local_position_callback(self, msg):
         self.position = [msg.x, msg.y, msg.z]
-
-    def step(self):
-        # Arm the vehicle
-        if self.offboard_setpoint_counter_ == 50:
-            self.arm()
-            self.offboard_setpoint_counter_ += 1
-        elif self.offboard_setpoint_counter_ < 50:
-            self.offboard_setpoint_counter_ += 1
-
-        # offboard_control_mode needs to be paired with trajectory_setpoint
-        self.publish_offboard_control_mode()
-
-        if self.nav_state == VehicleStatus.NAVIGATION_STATE_OFFBOARD:
-            self.flow()
-
-        elif self.bad_tries_to_offboard_counter_ < 15:
-            self.engage_offBoard_mode()
-            self.bad_tries_to_offboard_counter_ += 1
-        else:
-            self.get_logger().error("Couldn't get into OFFBOARD, Aborting...")
-            exit()
         
     def arm(self):
         self.get_logger().info("Arm command sent")
@@ -137,31 +116,34 @@ class OffboardControl(Node):
         self.publish_vehicle_command(msg)
 
     def flow(self):
-
         x = self.position[0]
-        y = self.position[0]
-        z = self.position[0]
+        y = self.position[1]
+        z = self.position[2]
 
         current_position = [x, y, z]
         current_setpoint = self.setpoints[self.state.name]
 
         distance = np.linalg.norm([abs(p1) - abs(p2) for p1,p2 in zip(current_position, current_setpoint)])
 
-        self.get_logger().info(f"distance = {distance}", throttle_duration_sec=0.25)
-
         if distance < self.tolerance and self.state == State.P1:
             self.state = State.P2
+            return
         if distance < self.tolerance and self.state == State.P2:
             self.state = State.P3
+            return
         if distance < self.tolerance and self.state == State.P3:
             self.state = State.P4
+            return
         if distance < self.tolerance and self.state == State.P4:
             self.state = State.P1
             self.repeats_counter += 1
+            if self.repeats_counter == self.repeats:
+                self.state = State.LAND
+                self.get_logger().info(f"Finished Offboard, Landing!")
 
-        if self.repeats_counter == self.repeats:
+        if self.state == State.LAND:
             self.land()
-            time.sleep(10)
+            time.sleep(1.0)
             exit()
         
         self.position_msg.position[0] = current_setpoint[0]
@@ -174,11 +156,33 @@ class OffboardControl(Node):
         self.trajectory_setpoint_publisher_.publish(self.position_msg)
         self.state_publisher.publish(self.offboard_state_msg)
 
-        self.get_logger().info(f"State = {self.state.name}", throttle_duration_sec=1.0)
-
+        self.get_logger().info(f"State = {self.state.name}, Position = {x:.3f},{y:.3f},{z:.3f}, distance = {distance:.3f}", throttle_duration_sec=0.25)
     def publish_vehicle_command(self, msg):
         msg.timestamp = int(Clock().now().nanoseconds / 1000)
         self.vehicle_command_publisher_.publish(msg)
+
+    def step(self):
+        # Arm the vehicle
+        if self.offboard_setpoint_counter_ == 50:
+            self.arm()
+            self.offboard_setpoint_counter_ += 1
+            return
+        elif self.offboard_setpoint_counter_ < 50:
+            self.offboard_setpoint_counter_ += 1
+            return
+
+        # offboard_control_mode needs to be paired with trajectory_setpoint
+        self.publish_offboard_control_mode()
+
+        if self.nav_state == VehicleStatus.NAVIGATION_STATE_OFFBOARD:
+            self.flow()
+
+        elif self.bad_tries_to_offboard_counter_ < 15:
+            self.engage_offBoard_mode()
+            self.bad_tries_to_offboard_counter_ += 1
+        else:
+            self.get_logger().error("Couldn't get into OFFBOARD, Aborting...")
+            exit()
 
 def main(args=None):
     rclpy.init(args=args)
