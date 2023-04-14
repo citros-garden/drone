@@ -13,6 +13,7 @@ import sys
 sys.path.insert(0,'/workspaces/citros_px4/ros2_ws/src/px4-offboard/launch')
 
 from rigid_body_config import  Parser as RigidBodyParser
+from px4_config import  Parser as PX4Parser
 
 offboard_parameters = os.path.join(
     get_package_share_directory('px4_offboard'),
@@ -22,6 +23,9 @@ offboard_parameters = os.path.join(
 
 rigid_body_parameters_parser = RigidBodyParser()
 rigid_body_parameters_parser.parse()
+
+px4_parameter_parser = PX4Parser()
+px4_parameter_parser.parse()
 
 time.sleep(1.0)
 
