@@ -1,0 +1,10 @@
+rigid_body_config:
+ ros__parameters:
+  i_xx: 1.17
+  i_yy: 1.78
+  i_zz: 0.06
+  i_xy: 0.00006
+  i_xz: 0.0000001
+  i_yz: 0.000056
+  m: 1.25
+  
