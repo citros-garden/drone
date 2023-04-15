@@ -1,17 +1,25 @@
 # CITROS Simulation with PX4
 
+exposing different parameters for PX4 SITL (Gazebo and ROS2 with XRCE-DDS) to CITROS
+
+# Install
+
+Clone the repository:
+
+              git@github.com:citros-garden/citros_px4.git
+
+Open the repository with VSCode and then `reopen in container`. the `devcontainer` contains all the development requirements.
+
 # Run
 
-# first terminal:
+Use the pre-configure VSCode tasks to `build` and `launch` the simulation.
 
-        make px4_sitl gazebo_iris
+# Dockers
 
-# second terminal:
+build:
 
-        source install/local_setup.bash
-        ros2 run micro_ros_agent micro_ros_agent udp4 --port 8888
+        docker build -t citros/px4:latest .
 
-# third terminal:
+run:
 
-        source install/local_setup.bash
-        ros2 launch px4_offboard offboard_position_control.launch.py
+        docker run --rm -it citros/px4:latest ros2 launch px4_offboard offboard_position_control.launch.py

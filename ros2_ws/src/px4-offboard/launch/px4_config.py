@@ -15,7 +15,7 @@ class Parser():
         parameters = parameters_raw['px4_config']['ros__parameters']
         print(parameters)
 
-        mc_pitchrate_p = f"param set-default MC_PITCHRATE_P {parameters['MC_PITCHRATE_P']}\n"
+        mc_pitchrate_p = f"\nparam set-default MC_PITCHRATE_P {parameters['MC_PITCHRATE_P']}\n"
         mc_pitchrate_i = f"param set-default MC_PITCHRATE_I {parameters['MC_PITCHRATE_I']}\n"
         mc_pitchrate_d = f"param set-default MC_PITCHRATE_D {parameters['MC_PITCHRATE_D']}\n"
         mc_pitchrate_k = f"param set-default MC_PITCHRATE_K {parameters['MC_PITCHRATE_K']}\n"
@@ -28,30 +28,24 @@ class Parser():
         mc_roll_p     = f"param set-default MC_ROLL_P {parameters['MC_ROLL_P']}\n"
 
         self.config = {
-        '28':   mc_pitchrate_p,
-        '29':   mc_pitchrate_i,
-        '30':   mc_pitchrate_d,
-        '31':   mc_pitchrate_k,
-        '32':   mc_pitch_p,
+        '1':   mc_pitchrate_p,
+        '2':   mc_pitchrate_i,
+        '3':   mc_pitchrate_d,
+        '4':   mc_pitchrate_k,
+        '5':   mc_pitch_p,
 
-        '34':  mc_rollrate_p,
-        '35':  mc_rollrate_i,
-        '36':  mc_rollrate_d,
-        '37':  mc_rollrate_k,
-        '38':  mc_roll_p,
+        '6':  mc_rollrate_p,
+        '7':  mc_rollrate_i,
+        '8':  mc_rollrate_d,
+        '9':  mc_rollrate_k,
+        '0':  mc_roll_p,
         }
 
     def parse(self):
-        with open(self.iris_file_path, "r") as file:
-            lines = file.readlines()
+        new_lines = [x for x in self.config.values()]
 
-        for key, value in self.config.items():
-            lines[int(key)] = value
-            print_value = value.split("\n")[0]
-            print(f"[px4-config-parameters] Writing to line {key}: {print_value}")
-
-        with open(self.iris_file_path, "w") as file:
-            file.writelines(lines)
+        with open(self.iris_file_path, "a") as file:
+            file.writelines(new_lines)
 
 def main():
      parser = Parser()
