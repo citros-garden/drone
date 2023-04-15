@@ -15,6 +15,21 @@ sys.path.insert(0,'/workspaces/drone/ros2_ws/src/px4-offboard/launch')
 from rigid_body_config import  Parser as RigidBodyParser
 from px4_config import  Parser as PX4Parser
 
+class bcolors:
+    OKBLUE = '\033[94m'
+    OKGREEN = '\033[92m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    
+print('''\n\n==============================================
+ ██████╗██╗████████╗██████╗  ██████╗ ███████╗
+██╔════╝██║╚══██╔══╝██╔══██╗██╔═══██╗██╔════╝
+██║     ██║   ██║   ██████╔╝██║   ██║███████╗
+██║     ██║   ██║   ██╔══██╗██║   ██║╚════██║
+╚██████╗██║   ██║   ██║  ██║╚██████╔╝███████║
+ ╚═════╝╚═╝   ╚═╝   ╚═╝  ╚═╝ ╚═════╝ ╚══════╝                                        
+==============================================\n\n''')
+
 offboard_parameters = os.path.join(
     get_package_share_directory('px4_offboard'),
     'config',
@@ -58,9 +73,18 @@ def generate_launch_description():
             arguments=['udp4', '--port', '8888']
     )
 
+    sys_shut_down = RegisterEventHandler(OnProcessExit(
+		target_action=node_offboard,
+        on_exit=[
+                    LogInfo(msg=(f'{bcolors.OKGREEN}The Scenario has ended!{bcolors.ENDC}')),
+                    EmitEvent(event=Shutdown(
+                        reason='Finished'))
+		        ]		
+	    ))
+
     bridge_dir = get_package_share_directory('rosbridge_server')
     node_rosbridge =  IncludeLaunchDescription(launch_description_sources.FrontendLaunchDescriptionSource(bridge_dir + '/launch/rosbridge_websocket_launch.xml'))
 
-    ld = LaunchDescription([proc_px4, node_offboard, node_dds_agent, node_rosbridge])
+    ld = LaunchDescription([proc_px4, node_offboard, node_dds_agent, node_rosbridge, sys_shut_down])
 
     return ld
