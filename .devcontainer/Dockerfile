@@ -3,6 +3,8 @@ FROM althack/ros2:humble-gazebo-nvidia
 # install utils
 ENV DEBIAN_FRONTEND=noninteractive
 ENV COM_RCL_EXCEPT=4
+ENV PYTHONOPTIMIZE=1
+ENV ROS_DOMAIN_ID=0
 
 RUN apt-get update && apt-get install -y \
   bash-completion \
@@ -43,7 +45,7 @@ RUN apt-get update && apt-get install -y \
   && echo "source /usr/share/bash-completion/completions/git" >> /home/$USERNAME/.bashrc
 
 RUN usermod -a -G video dev
-RUN apt upgrade -y ros-humble-rosidl*
+RUN apt update && apt upgrade -y ros-humble-rosidl*
 # Set up auto-source of workspace for ros user
 ARG WORKSPACE
 RUN echo "if [ -f ${WORKSPACE}/install/setup.bash ]; then source ${WORKSPACE}/install/setup.bash; fi" >> /home/ros/.bashrc

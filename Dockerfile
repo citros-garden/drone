@@ -45,7 +45,8 @@ RUN apt-get update && apt-get install -y \
 
 RUN pip install setuptools==58.2.0
 
-RUN apt upgrade -y ros-humble-rosidl*
+RUN apt update && apt upgrade -y ros-humble-rosidl*
+
 # Set up auto-source of workspace for ros user
 ARG WORKSPACE
 RUN echo "if [ -f ${WORKSPACE}/install/setup.bash ]; then source ${WORKSPACE}/install/setup.bash; fi" >> /home/ros/.bashrc
@@ -71,6 +72,9 @@ RUN  . /opt/ros/${ROS_DISTRO}/setup.sh && \
      colcon build
 
 COPY ros2_entrypoint.sh ros2_entrypoint.sh
+
+ENV PYTHONOPTIMIZE=1
+ENV ROS_DOMAIN_ID=0
 
 RUN echo "source /workspaces/citros_px4/ros2_ws/install/local_setup.bash" >> /home/$USERNAME/.bashrc
 

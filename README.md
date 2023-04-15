@@ -22,4 +22,4 @@ build:
 
 run:
 
-        run docker run --rm -it citros/px4:latest ros2 launch px4_offboard offboard_position_control.launch.py
+        docker run --rm -it citros/px4:latest ros2 launch px4_offboard offboard_position_control.launch.py
