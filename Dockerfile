@@ -51,7 +51,7 @@ RUN apt update && apt upgrade -y ros-humble-rosidl*
 ARG WORKSPACE
 RUN echo "if [ -f ${WORKSPACE}/install/setup.bash ]; then source ${WORKSPACE}/install/setup.bash; fi" >> /home/ros/.bashrc
 
-WORKDIR /workspaces/citros_px4
+WORKDIR /workspaces/drone
 
 RUN git clone -b release/1.14 https://github.com/PX4/PX4-Autopilot.git
 
@@ -76,9 +76,9 @@ COPY ros2_entrypoint.sh ros2_entrypoint.sh
 ENV PYTHONOPTIMIZE=1
 ENV ROS_DOMAIN_ID=0
 
-RUN echo "source /workspaces/citros_px4/ros2_ws/install/local_setup.bash" >> /home/$USERNAME/.bashrc
+RUN echo "source /workspaces/drone/ros2_ws/install/local_setup.bash" >> /home/$USERNAME/.bashrc
 
 RUN chmod +x ros2_entrypoint.sh
-ENTRYPOINT ["/workspaces/citros_px4/ros2_entrypoint.sh"]
+ENTRYPOINT ["/workspaces/drone/ros2_entrypoint.sh"]
 
 CMD ["bash"]
