@@ -78,6 +78,8 @@ ENV ROS_DOMAIN_ID=0
 
 RUN echo "source /workspaces/drone/ros2_ws/install/local_setup.bash" >> /home/$USERNAME/.bashrc
 
+RUN pip install citros
+
 RUN chmod +x ros2_entrypoint.sh
 ENTRYPOINT ["/workspaces/drone/ros2_entrypoint.sh"]
 
