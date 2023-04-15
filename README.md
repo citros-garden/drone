@@ -18,8 +18,15 @@ Use the pre-configure VSCode tasks to `build` and `launch` the simulation.
 
 build:
 
-        docker build -t citros/drone:latest .
+        docker build -t drone .
 
 run:
 
-        docker run --rm -it citros/drone:latest ros2 launch px4_offboard offboard_position_control.launch.py
+        docker run --rm -it drone ros2 launch px4_offboard offboard_position_control.launch.py
+
+# CITROS:
+
+                citros docker-login
+                docker tag cannon us-central1-docker.pkg.dev/citros/lulav/drone
+                docker push us-central1-docker.pkg.dev/citros/lulav/drone
+
