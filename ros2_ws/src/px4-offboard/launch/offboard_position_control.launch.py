@@ -10,7 +10,7 @@ from launch.events import Shutdown, process
 import os
 import sys
 
-sys.path.insert(0,'/workspaces/citros_px4/ros2_ws/src/px4-offboard/launch')
+sys.path.insert(0,'/workspaces/drone/ros2_ws/src/px4-offboard/launch')
 
 from rigid_body_config import  Parser as RigidBodyParser
 from px4_config import  Parser as PX4Parser
@@ -32,7 +32,7 @@ time.sleep(1.0)
 def generate_launch_description():
 
     proc_px4 = ExecuteProcess(
-        cmd=['bash', '-c', 'cd /workspaces/citros_px4/PX4-Autopilot && HEADLESS=1 make px4_sitl gazebo'],
+        cmd=['bash', '-c', 'cd /workspaces/drone/PX4-Autopilot && HEADLESS=1 make px4_sitl gazebo'],
         cwd='/tmp/px4',
         output='screen',
         emulate_tty=True

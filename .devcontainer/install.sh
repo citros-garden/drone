@@ -1,5 +1,5 @@
 #!/bin/bash
-WORKSPACE_DIR="/workspaces/citros_px4/"
+WORKSPACE_DIR="/workspaces/drone/"
 
 cd $WORKSPACE_DIR
 
@@ -11,9 +11,17 @@ git checkout release/1.14
 cd ..
 git submodule update --init --recursive
 
+cd PX4-Autopilot
+
 # Installing all PX4 deps
 PX4-Autopilot/Tools/setup/ubuntu.sh --no-nuttx
-
+make px4_sitl gazebo
 # Installing Gazebo
 sudo apt-get install -y gazebo
 pip install setuptools==58.2.0
+
+cd ..
+cd ros2_ws
+colcon build
+
+echo "Done installing, ready to develop!"

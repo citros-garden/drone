@@ -3,8 +3,8 @@ import yaml
 class Parser():
     def __init__(self):
 
-        self.parameter_file_path = '/workspaces/citros_px4/ros2_ws/src/rigid_body_config/config/params.yaml'
-        self.iris_file_path = '/workspaces/citros_px4/PX4-Autopilot/Tools/simulation/gazebo-classic/sitl_gazebo-classic/models/iris/iris.sdf'
+        self.parameter_file_path = '/workspaces/drone/ros2_ws/src/rigid_body_config/config/params.yaml'
+        self.iris_file_path = '/workspaces/drone/PX4-Autopilot/Tools/simulation/gazebo-classic/sitl_gazebo-classic/models/iris/iris.sdf'
 
         with open(self.parameter_file_path, "r") as stream:
             try:

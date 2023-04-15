@@ -44,7 +44,7 @@ RUN apt-get update && apt-get install -y \
   && rm -rf /var/lib/apt/lists/* \
   && echo "source /usr/share/bash-completion/completions/git" >> /home/$USERNAME/.bashrc
 
-RUN usermod -a -G video dev
+RUN usermod -a -G video ros
 RUN apt update && apt upgrade -y ros-humble-rosidl*
 # Set up auto-source of workspace for ros user
 ARG WORKSPACE
