@@ -6,7 +6,7 @@ exposing different parameters for PX4 SITL (Gazebo and ROS2 with XRCE-DDS) to CI
 
 Clone the repository:
 
-              git@github.com:citros-garden/citros_px4.git
+             git clone git@github.com:citros-garden/citros_px4.git
 
 Open the repository with VSCode and then `reopen in container`. the `devcontainer` contains all the development requirements.
 
