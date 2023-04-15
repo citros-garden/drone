@@ -23,5 +23,7 @@ pip install setuptools==58.2.0
 cd ..
 cd ros2_ws
 colcon build
+cd ..
+mkdir /tmp/px4
 
 echo "Done installing, ready to develop!"
