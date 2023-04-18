@@ -1,0 +1,21 @@
+sensors_config:
+ ros__parameters:
+  # https://github.com/uuvsimulator/uuv_simulator_docs/blob/master/docs/packages/uuv_simulator/docs/api/gazebo::IMUParameters.md
+  gyroscopeNoiseDensity: 0.00018665 # Gyroscope noise density (two-sided spectrum) [rad/s/sqrt(Hz)].
+  gyroscopeRandomWalk: 3.8785e-05 # Gyroscope bias random walk [rad/s/s/sqrt(Hz)].
+  gyroscopeBiasCorrelationTime: 1000.0 # Gyroscope bias correlation time constant [s].
+  gyroscopeTurnOnBiasSigma: 0.0087 # Gyroscope turn on bias standard deviation [rad/s].
+
+  accelerometerNoiseDensity: 0.001865 # Accelerometer noise density (two-sided spectrum) [m/s^2/sqrt(Hz)].
+  accelerometerRandomWalk: 0.006 # Accelerometer bias random walk. [m/s^2/s/sqrt(Hz)].
+  accelerometerBiasCorrelationTime: 300.0 # Accelerometer bias correlation time constant [s].
+  accelerometerTurnOnBiasSigma: 0.196 # Accelerometer turn on bias standard deviation [m/s^2].
+
+  gpsXYRandomWalk: 2.0
+  gpsZRandomWalk: 4.0
+  gpsXYNoiseDensity: 2.0e-4
+  gpsZNoiseDensity: 4.0e-4
+  gpsVXYNoiseDensity: 0.2
+  gpsVZNoiseDensity: 0.4
+
+             
