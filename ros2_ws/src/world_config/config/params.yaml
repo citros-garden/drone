@@ -1,6 +1,6 @@
 world_config:
  ros__parameters:
-  windVelocityMean: 15.0
+  windVelocityMean: 4.0
   windVelocityMax: 20.0
   windVelocityVariance: 0
   windDirectionMean_x: 1
