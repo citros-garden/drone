@@ -32,7 +32,7 @@ print('''\n\n==============================================
 ==============================================\n\n''')
 
 try:
-	headless = True if sys.argv[4].split(":=")[1] == 'True' else False
+	headless = False if sys.argv[4].split(":=")[1] == 'False' else True
 except:
 	print(f"{bcolors.WARNING}Gazebo mode not selected, running default with GUI{bcolors.ENDC}")
 	headless = True
