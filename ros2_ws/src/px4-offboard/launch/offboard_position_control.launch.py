@@ -14,6 +14,7 @@ sys.path.insert(0,'/workspaces/drone/ros2_ws/src/px4-offboard/launch')
 
 from rigid_body_config import  Parser as RigidBodyParser
 from px4_config import  Parser as PX4Parser
+from sensors_config import Parser as SensorsParser
 
 class bcolors:
     OKBLUE = '\033[94m'
@@ -50,6 +51,9 @@ rigid_body_parameters_parser.parse()
 
 px4_parameter_parser = PX4Parser()
 px4_parameter_parser.parse()
+
+sensors_parameters = SensorsParser()
+sensors_parameters.parse()
 
 time.sleep(1.0)
 
