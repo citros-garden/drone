@@ -20,6 +20,7 @@ class bcolors:
     OKGREEN = '\033[92m'
     FAIL = '\033[91m'
     ENDC = '\033[0m'
+    WARNING = '\033[93m'
     
 print('''\n\n==============================================
  ██████╗██╗████████╗██████╗  ██████╗ ███████╗
@@ -29,6 +30,14 @@ print('''\n\n==============================================
 ╚██████╗██║   ██║   ██║  ██║╚██████╔╝███████║
  ╚═════╝╚═╝   ╚═╝   ╚═╝  ╚═╝ ╚═════╝ ╚══════╝                                        
 ==============================================\n\n''')
+
+try:
+	headless = True if sys.argv[4].split(":=")[1] == 'True' else False
+except:
+	print(f"{bcolors.WARNING}Gazebo mode not selected, running default with GUI{bcolors.ENDC}")
+	headless = True
+
+mode = 'HEADLESS=1' if headless else ''
 
 offboard_parameters = os.path.join(
     get_package_share_directory('px4_offboard'),
@@ -47,7 +56,7 @@ time.sleep(1.0)
 def generate_launch_description():
 
     proc_px4 = ExecuteProcess(
-        cmd=['bash', '-c', 'cd /workspaces/drone/PX4-Autopilot && HEADLESS=1 make px4_sitl gazebo'],
+        cmd=['bash', '-c', f'cd /workspaces/drone/PX4-Autopilot && {mode} make px4_sitl gazebo'],
         cwd='/tmp/px4',
         output='screen',
         emulate_tty=True
