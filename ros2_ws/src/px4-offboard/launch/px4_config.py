@@ -1,4 +1,5 @@
 import yaml
+import json
 
 class Parser():
     def __init__(self):
@@ -13,7 +14,6 @@ class Parser():
                     print(exc)
 
         parameters = parameters_raw['px4_config']['ros__parameters']
-        print(parameters)
 
         mc_pitchrate_p = f"\nparam set-default MC_PITCHRATE_P {parameters['MC_PITCHRATE_P']}\n"
         mc_pitchrate_i = f"param set-default MC_PITCHRATE_I {parameters['MC_PITCHRATE_I']}\n"
@@ -26,6 +26,8 @@ class Parser():
         mc_rollrate_d = f"param set-default MC_ROLLRATE_D {parameters['MC_ROLLRATE_D']}\n"
         mc_rollrate_k = f"param set-default MC_ROLLRATE_K {parameters['MC_ROLLRATE_K']}\n"
         mc_roll_p     = f"param set-default MC_ROLL_P {parameters['MC_ROLL_P']}\n"
+
+        print("[px4-parameters] Writing: ", json.dumps(parameters, sort_keys=True, indent=1))
 
         self.config = {
         '1':   mc_pitchrate_p,
