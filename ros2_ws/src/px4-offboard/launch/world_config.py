@@ -4,7 +4,7 @@ class Parser():
     def __init__(self):
 
         self.parameter_file_path = '/workspaces/drone/ros2_ws/src/world_config/config/params.yaml'
-        self.world_file_path = '/workspaces/drone/ros2_ws/src/world_config/world_config/empty.world'
+        self.world_file_path = '/workspaces/drone/PX4-Autopilot/Tools/simulation/gazebo-classic/sitl_gazebo-classic/worlds/empty.world'
 
         with open(self.parameter_file_path, "r") as stream:
             try:
