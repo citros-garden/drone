@@ -23,5 +23,12 @@
             "problemMatcher": [],
             "dependsOn": ["build"]
         },
+        {
+            "label": "launch-simulation-env",
+            "type": "shell",
+            "command": "cd ros2_ws && source install/local_setup.bash && ros2 launch px4_offboard simulation.launch.py headless:=False",
+            "problemMatcher": [],
+            "dependsOn": ["build"]
+        },
     ]
 }

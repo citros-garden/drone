@@ -1,0 +1,14 @@
+{
+    "cover": "",
+    "description": "",
+    "git": "",
+    "image": "drone",
+    "is_active": true,
+    "launches": [],
+    "license": "",
+    "name": "drone",
+    "packages": [],
+    "path": ".",
+    "readme": "# CITROS Simulation with PX4\n\nexposing different parameters for PX4 SITL (Gazebo and ROS2 with XRCE-DDS) to CITROS\n\n# Install\n\nClone the repository:\n\n             git clone git@github.com:citros-garden/drone.git\n\nOpen the repository with VSCode and then `reopen in container`. the `devcontainer` contains all the development requirements.\n\n# Run\n\nUse the pre-configure VSCode tasks to `build` and `launch` the simulation.\n\n# Dockers\n\nbuild:\n\n        docker build -t drone .\n\nrun:\n\n        docker run --rm -it drone ros2 launch px4_offboard offboard_position_control.launch.py\n\n# CITROS:\n\n                citros login\n                citros sync\n\n                citros docker-login\n                docker tag drone us-central1-docker.pkg.dev/citros/lulav/drone\n                docker push us-central1-docker.pkg.dev/citros/lulav/drone\n\n",
+    "tags": []
+}
