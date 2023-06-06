@@ -26,7 +26,10 @@ run:
 
 # CITROS:
 
+                citros login
+                citros sync
+
                 citros docker-login
-                docker tag cannon us-central1-docker.pkg.dev/citros/lulav/drone
+                docker tag drone us-central1-docker.pkg.dev/citros/lulav/drone
                 docker push us-central1-docker.pkg.dev/citros/lulav/drone
 
