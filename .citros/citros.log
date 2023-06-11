@@ -1,18 +1,34 @@
-[2023-06-06 11:12:46,465] [citros.citros-None-None.login:273] [INFO]: Authenticated!
-[2023-06-06 11:12:51,898] [citros.citros-None-None.get_project_packages:257] [DEBUG]:  + get_project_packages ./
-[2023-06-06 11:12:51,901] [citros.citros-None-None.get_git_remote_url:362] [INFO]: Inside devcontainer. Cannot communicate with github.
-[2023-06-06 11:12:51,901] [citros.citros-None-None.get_file_content:403] [ERROR]: could not find file ./LICENSE
-[2023-06-06 11:13:32,462] [citros.citros-None-None.get_project_packages:257] [DEBUG]:  + get_project_packages ./
-[2023-06-06 11:13:32,465] [citros.citros-None-None.get_git_remote_url:362] [INFO]: Inside devcontainer. Cannot communicate with github.
-[2023-06-06 11:14:03,024] [citros.citros-None-None.get_project_packages:257] [DEBUG]:  + get_project_packages ./
-[2023-06-06 11:14:03,028] [citros.citros-None-None.get_git_remote_url:362] [INFO]: Inside devcontainer. Cannot communicate with github.
-[2023-06-06 11:15:08,596] [citros.citros-None-None.get_project_packages:257] [DEBUG]:  + get_project_packages ./
-[2023-06-06 11:15:08,596] [citros.citros-None-None.get_project_packages:257] [DEBUG]:  + get_project_packages ./ros2_ws
-[2023-06-06 11:15:08,596] [citros.citros-None-None.get_project_packages:268] [DEBUG]: package_path: ./ros2_ws/src/uros
-[2023-06-06 11:15:08,596] [citros.citros-None-None.get_project_packages:268] [DEBUG]: package_path: ./ros2_ws/src/px4_ros_com
-[2023-06-06 11:15:08,605] [citros.citros-None-None.get_project_packages:311] [ERROR]: [Errno 2] No such file or directory: './ros2_ws/src/px4_ros_com/config/params.yaml'
+[2023-06-10 12:02:57,227] [citros.citros-None-None.get_project_packages:121] [DEBUG]:  + get_project_packages ./ros_ws
+[2023-06-10 12:02:57,958] [citros.citros-None-None.gql_execute:361] [ERROR]: {'message': 'jwt expired', 'stack': ['TokenExpiredError: jwt expired', '    at /app/node_modules/jsonwebtoken/verify.js:190:21', '    at getSecret (/app/node_modules/jsonwebtoken/verify.js:97:14)', '    at Object.module.exports [as verify] (/app/node_modules/jsonwebtoken/verify.js:101:10)', '    at claims (/app/node_modules/postgraphile/build/postgraphile/withPostGraphileContext.js:255:21)', '    at new Promise (<anonymous>)', '    at getSettingsForPgClientTransaction (/app/node_modules/postgraphile/build/postgraphile/withPostGraphileContext.js:254:34)', '    at withDefaultPostGraphileContext (/app/node_modules/postgraphile/build/postgraphile/withPostGraphileContext.js:64:62)', '    at Object.withPostGraphileContext [as default] (/app/node_modules/postgraphile/build/postgraphile/withPostGraphileContext.js:220:12)', '    at /app/node_modules/postgraphile/build/postgraphile/http/createPostGraphileHttpRequestHandler.js:102:49', '    at /app/node_modules/postgraphile/build/postgraphile/http/createPostGraphileHttpRequestHandler.js:711:40']}
 Traceback (most recent call last):
-  File "/home/ros/.local/lib/python3.10/site-packages/citros/parsers/parser_ros2.py", line 294, in get_project_packages
+  File "/home/lulav/.local/lib/python3.10/site-packages/citros/citros.py", line 358, in gql_execute
+    return self._get_gql_client().execute(gql_query, variable_values=variable_values)
+  File "/home/lulav/.local/lib/python3.10/site-packages/gql/client.py", line 403, in execute
+    return self.execute_sync(
+  File "/home/lulav/.local/lib/python3.10/site-packages/gql/client.py", line 221, in execute_sync
+    return session.execute(
+  File "/home/lulav/.local/lib/python3.10/site-packages/gql/client.py", line 860, in execute
+    raise TransportQueryError(
+gql.transport.exceptions.TransportQueryError: {'message': 'jwt expired', 'stack': ['TokenExpiredError: jwt expired', '    at /app/node_modules/jsonwebtoken/verify.js:190:21', '    at getSecret (/app/node_modules/jsonwebtoken/verify.js:97:14)', '    at Object.module.exports [as verify] (/app/node_modules/jsonwebtoken/verify.js:101:10)', '    at claims (/app/node_modules/postgraphile/build/postgraphile/withPostGraphileContext.js:255:21)', '    at new Promise (<anonymous>)', '    at getSettingsForPgClientTransaction (/app/node_modules/postgraphile/build/postgraphile/withPostGraphileContext.js:254:34)', '    at withDefaultPostGraphileContext (/app/node_modules/postgraphile/build/postgraphile/withPostGraphileContext.js:64:62)', '    at Object.withPostGraphileContext [as default] (/app/node_modules/postgraphile/build/postgraphile/withPostGraphileContext.js:220:12)', '    at /app/node_modules/postgraphile/build/postgraphile/http/createPostGraphileHttpRequestHandler.js:102:49', '    at /app/node_modules/postgraphile/build/postgraphile/http/createPostGraphileHttpRequestHandler.js:711:40']}
+[2023-06-10 12:02:57,970] [citros.citros-None-None.logout:142] [DEBUG]: logged out.
+[2023-06-10 12:03:44,421] [citros.citros-None-None.get_project_packages:121] [DEBUG]:  + get_project_packages ./ros_ws
+[2023-06-10 12:03:44,421] [citros.citros-None-None.get_project_packages:121] [DEBUG]:  + get_project_packages ./ros2_ws/
+[2023-06-10 12:03:44,421] [citros.citros-None-None.get_project_packages:132] [DEBUG]: package_path: ./ros2_ws//src/uros
+[2023-06-10 12:03:44,421] [citros.citros-None-None.get_project_packages:132] [DEBUG]: package_path: ./ros2_ws//src/px4_ros_com
+[2023-06-10 12:03:44,422] [citros.citros-None-None.get_project_packages:175] [ERROR]: [Errno 2] No such file or directory: './ros2_ws//src/px4_ros_com/config/params.yaml'
+Traceback (most recent call last):
+  File "/home/lulav/.local/lib/python3.10/site-packages/citros/parsers/parser_ros2.py", line 158, in get_project_packages
     with open(path_to_config, 'r') as config_file:
-FileNotFoundError: [Errno 2] No such file or directory: './ros2_ws/src/px4_ros_com/config/params.yaml'
-[2023-06-06 11:15:08,606] [citros.citros-None-None.get_project_packages:268] [DEBUG]: package_path: ./ros2_ws/src/world_config
+FileNotFoundError: [Errno 2] No such file or directory: './ros2_ws//src/px4_ros_com/config/params.yaml'
+[2023-06-10 12:03:44,431] [citros.citros-None-None.get_project_packages:132] [DEBUG]: package_path: ./ros2_ws//src/world_config
+[2023-06-10 12:03:44,432] [citros.citros-None-None.get_project_packages:132] [DEBUG]: package_path: ./ros2_ws//src/px4_msgs
+[2023-06-10 12:03:44,432] [citros.citros-None-None.get_project_packages:175] [ERROR]: [Errno 2] No such file or directory: './ros2_ws//src/px4_msgs/config/params.yaml'
+Traceback (most recent call last):
+  File "/home/lulav/.local/lib/python3.10/site-packages/citros/parsers/parser_ros2.py", line 158, in get_project_packages
+    with open(path_to_config, 'r') as config_file:
+FileNotFoundError: [Errno 2] No such file or directory: './ros2_ws//src/px4_msgs/config/params.yaml'
+[2023-06-10 12:03:44,432] [citros.citros-None-None.get_project_packages:132] [DEBUG]: package_path: ./ros2_ws//src/rigid_body_config
+[2023-06-10 12:03:44,433] [citros.citros-None-None.get_project_packages:132] [DEBUG]: package_path: ./ros2_ws//src/sensors_config
+[2023-06-10 12:03:44,435] [citros.citros-None-None.get_project_packages:132] [DEBUG]: package_path: ./ros2_ws//src/px4_config
+[2023-06-10 12:03:44,436] [citros.citros-None-None.get_project_packages:132] [DEBUG]: package_path: ./ros2_ws//src/px4-offboard
+[2023-06-10 16:24:26,002] [citros.citros-None-None.login:250] [INFO]: Authenticated!
