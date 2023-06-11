@@ -28,7 +28,7 @@ class OffboardControl(Node):
             reliability=QoSReliabilityPolicy.BEST_EFFORT ,
             durability=QoSDurabilityPolicy.TRANSIENT_LOCAL,
             history=QoSHistoryPolicy.KEEP_ALL,
-            depth=100
+            depth=10
         )
 
         self.status_sub = self.create_subscription(VehicleStatus,'/fmu/out/vehicle_status',self.vehicle_status_callback, qos_profile)
