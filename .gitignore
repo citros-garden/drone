@@ -11,3 +11,6 @@ ros2_ws/test_data/*
 ros2_ws/eeprom/*
 ros2_ws/dataman
 ros2_ws/site/*
+
+# Added by Citros init
+.citros
