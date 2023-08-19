@@ -4,7 +4,7 @@ WORKSPACE_DIR="/workspaces/drone/"
 cd $WORKSPACE_DIR
 
 # Adding PX4 as submodule
-git submodule add -b release/1.14 https://github.com/PX4/PX4-Autopilot.git
+git submodule add --force -b release/1.14 https://github.com/PX4/PX4-Autopilot.git
 cd PX4-Autopilot
 git submodule update --init --recursive
 
@@ -19,7 +19,7 @@ cd ..
 cd ros2_ws
 colcon build
 cd ..
-mkdir /tmp/px4
+# mkdir /tmp/px4
 
 echo "
 # ==============================================

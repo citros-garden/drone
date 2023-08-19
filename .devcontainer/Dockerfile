@@ -41,6 +41,7 @@ RUN apt-get update && apt-get install -y \
   libgl1-mesa-glx \
   libgl1-mesa-dri \
   ros-humble-rosbridge-suite \
+  ros-humble-rosbag2-storage-mcap \
   && rm -rf /var/lib/apt/lists/* \
   && echo "source /usr/share/bash-completion/completions/git" >> /home/$USERNAME/.bashrc
 

@@ -13,3 +13,5 @@ ros2_ws/dataman
 ros2_ws/site/*
 
 db/
+
+.citros/

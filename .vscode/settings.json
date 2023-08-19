@@ -49,6 +49,7 @@
         "devcontainer",
         "ENDC",
         "ints",
+        "mcap",
         "noqa",
         "OKBLUE",
         "OKGREEN",
