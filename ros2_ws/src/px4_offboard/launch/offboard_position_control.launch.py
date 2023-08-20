@@ -10,7 +10,7 @@ from launch.events import Shutdown, process
 import os
 import sys
 
-sys.path.insert(0,'/workspaces/drone/ros2_ws/src/px4-offboard/launch')
+sys.path.insert(0,'/workspaces/drone/ros2_ws/src/px4_offboard/launch')
 
 from rigid_body_config import  Parser as RigidBodyParser
 from px4_config import  Parser as PX4Parser
@@ -69,6 +69,16 @@ def generate_launch_description():
         output='screen',
         emulate_tty=True
     )
+
+    node_offboard = Node(
+            package='px4_offboard',
+            namespace='offboard_control',
+            executable='offboard_control',
+            output='screen',
+            name='offboard_control',
+            parameters=[offboard_parameters],
+            emulate_tty=True
+    )
     
     node_dds_agent = Node(
             package='micro_ros_agent',
@@ -80,18 +90,22 @@ def generate_launch_description():
             arguments=['udp4', '--port', '8888']
     )
 
+    recorder = ExecuteProcess(
+                cmd=['ros2', 'bag', 'record', '-a', '-s', 'mcap','-o', f'db/{time.strftime("%Y-%m-%d_%H:%M:%S", time.gmtime())}'],
+	)
+
     sys_shut_down = RegisterEventHandler(OnProcessExit(
-		target_action=proc_px4,
+		target_action=node_offboard,
         on_exit=[
                     LogInfo(msg=(f'{bcolors.OKGREEN}The Scenario has ended!{bcolors.ENDC}')),
                     EmitEvent(event=Shutdown(
                         reason='Finished'))
 		        ]		
-	    ))
+	))
 
     bridge_dir = get_package_share_directory('rosbridge_server')
     node_rosbridge =  IncludeLaunchDescription(launch_description_sources.FrontendLaunchDescriptionSource(bridge_dir + '/launch/rosbridge_websocket_launch.xml'))
 
-    ld = LaunchDescription([proc_px4, node_dds_agent, node_rosbridge, sys_shut_down])
+    ld = LaunchDescription([proc_px4, node_offboard, node_dds_agent, node_rosbridge,recorder, sys_shut_down])
 
     return ld
