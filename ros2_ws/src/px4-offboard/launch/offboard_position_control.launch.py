@@ -91,7 +91,7 @@ def generate_launch_description():
     )
 
     recorder = ExecuteProcess(
-                                cmd=['ros2', 'bag', 'record', '-a', '-s', 'mcap','-o', f'db/{time.strftime("%Y-%m-%d_%H:%M:%S", time.gmtime())}'],
+                cmd=['ros2', 'bag', 'record', '-a', '-s', 'mcap','-o', f'db/{time.strftime("%Y-%m-%d_%H:%M:%S", time.gmtime())}'],
 	)
 
     sys_shut_down = RegisterEventHandler(OnProcessExit(
