@@ -86,8 +86,7 @@ class Modifier():
                         current_level = attr
                         break
             else:
-                self.logger.error(f"Error: '{p}' not found in the current dict level.")
-                self.logger.error(f"{current_level}")
+                self.logger.error(f"{current_level}: '{p}' not found in the current dict level.")
                 break
 
         self.logger.info(f"Setting {p_path[-1]} to {p_value}")
