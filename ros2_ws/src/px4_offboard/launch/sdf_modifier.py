@@ -23,27 +23,6 @@ class Modifier():
         )
         self.logger = logging.getLogger('Modifier')
         self.logger.setLevel(logging.DEBUG)
-    
-    def _set_nested_value(self, json_obj, path, value):
-        """
-        Set a nested value in a JSON-like object.
-
-        Args:
-            json_obj (dict/list): The JSON-like object.
-            path (list): List of keys representing the path to the parameter.
-            value (float/int/str): The new value to set.
-
-        Returns:
-            dict/list: The modified JSON-like object.
-        """
-        current_level = json_obj
-        for p in path[:-1]:
-            if isinstance(current_level, dict) and p in current_level:
-                current_level = current_level[p]
-            elif isinstance(current_level, list) and isinstance(p, int) and p < len(current_level):
-                current_level = current_level[p]
-        current_level[path[-1]] = value
-        return json_obj
 
     def _convert_to_json(self, sdf_file_path):
         """
@@ -97,7 +76,7 @@ class Modifier():
         """
         sdf_json = self._convert_to_json(sdf_file_path)
         current_level = sdf_json
-        for p in p_path:
+        for p in p_path[:-1]:
             if isinstance(current_level, dict) and p in current_level:
                 current_level = current_level[p]
             elif isinstance(current_level, list) and isinstance(p, int) and p < len(current_level):
@@ -106,8 +85,10 @@ class Modifier():
                 self.logger.error(f"Error: '{p}' not found in the current JSON level.")
                 break
 
-        if isinstance(current_level, (str, int, float)):
-            sdf_json = self._set_nested_value(sdf_json, p_path, p_value)
+        self.logger.info(f"Chaning {p_path[-1]} to {p_value}")
+
+        if isinstance(current_level[p_path[-1]], (str, int, float)):
+            current_level[p_path[-1]] = p_value
 
             if self._save_sdf(sdf_file_path, sdf_json) == 0:
                 self.logger.info("SDF file modified and saved successfully.")
@@ -119,6 +100,6 @@ class Modifier():
 if __name__ == "__main__":
     sdf_file_path = "/workspaces/drone/ros2_ws/src/rigid_body_config/rigid_body_config/iris_modified.sdf"
     parameter_path = ["sdf", "model", "link", 0, "inertial", "inertia", "ixx"]
-    parameter_value = 10.0
+    parameter_value = 1.0
     mod = Modifier()
     mod.change_parameter(sdf_file_path, parameter_path, parameter_value)
