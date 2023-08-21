@@ -77,6 +77,7 @@ class Modifier():
         sdf_dict = self._convert_to_dict(sdf_file_path)
         current_level = sdf_dict
         number_of_path_elements = len(p_path[:-1])
+
         for counter, p in enumerate(p_path[:-1]):
             if isinstance(current_level, dict) and p in current_level:
                 current_level = current_level[p]
@@ -85,8 +86,6 @@ class Modifier():
                     if p in attr["@name"]:
                         current_level = attr
                         break
-            elif isinstance(current_level, list) and counter == number_of_path_elements:
-                pass
             else:
                 self.logger.error(f"Error: '{p}' not found in the current dict level.")
                 self.logger.error(f"{current_level}")
@@ -94,15 +93,21 @@ class Modifier():
 
         self.logger.info(f"Setting {p_path[-1]} to {p_value}")
 
-        if isinstance(current_level[p_path[-1]], (str, int, float, list)):
+        if isinstance(p_value, (str, int, float)):
             current_level[p_path[-1]] = p_value
+                
+        elif isinstance(p_value, list):
+            self.logger.debug(f"Element {p_path[-1]} element is a list")
+            current_level[p_path[-1]] = ' '.join(str(x) for x in p_value)
 
-            if self._save_sdf(sdf_file_path, sdf_dict) == 0:
-                self.logger.debug(f"{p_path[-1]} Saved in the SDF file successfully.")
-            else:
-                self.logger.error("Failed to save the SDF file.")
         else:
             self.logger.error("Target parameter is not a valid scalar value.")
+            return
+
+        if self._save_sdf(sdf_file_path, sdf_dict) == 0:
+            self.logger.debug(f"{p_path[-1]} Saved in the SDF file successfully.")
+        else:
+            self.logger.error("Failed to save the SDF file.")
 
 if __name__ == "__main__":
     sdf_file_path = "/workspaces/drone/ros2_ws/src/rigid_body_config/rigid_body_config/iris_modified.sdf"
