@@ -1,4 +1,4 @@
-rigid_body_config:
+rigid_body:
  ros__parameters:
   ixx: 0.029125          # [kg*m^2]
   iyy: 0.029125          # [kg*m^2]
