@@ -1,6 +1,6 @@
 import xmltodict
 
-class ParameterConvertor():
+class Modifier():
     """
     A utility class to convert SDF files, modify specified parameters, and save the changes.
 
@@ -112,4 +112,4 @@ if __name__ == "__main__":
     sdf_file_path = "/workspaces/drone/ros2_ws/src/rigid_body_config/rigid_body_config/iris_modified.sdf"
     parameter_path = ["sdf", "model", "link", 0, "inertial", "inertia", "ixx"]
     parameter_value = 10.0
-    ParameterConvertor.change_parameter(sdf_file_path, parameter_path, parameter_value)
+    Modifier.change_parameter(sdf_file_path, parameter_path, parameter_value)
