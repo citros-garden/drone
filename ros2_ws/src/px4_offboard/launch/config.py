@@ -25,22 +25,22 @@ RIGID_BODY = {
     "iyy": ["sdf", "model", "link", "base_link", "inertial", "inertia", "iyy"],
     "iyz": ["sdf", "model", "link", "base_link", "inertial", "inertia", "iyz"],
     "izz": ["sdf", "model", "link", "base_link", "inertial", "inertia", "izz"],
-    "mass":  ["sdf", "model", "link", "base_link", "inertial", "inertia", "mass"]
+    "mass":  ["sdf", "model", "link", "base_link", "inertial", "mass"]
 }
 
 WORLD = {
-    "windVelocityMean": ["sdf", "world", "plugin", "wind_plugin", "windVelocityMean"],
-    "windVelocityMax": ["sdf", "world", "plugin", "wind_plugin", "windVelocityMax"],
-    "windVelocityVariance": ["sdf", "world", "plugin", "wind_plugin", "windVelocityVariance"],
-    "windDirectionMean": ["sdf", "world", "plugin", "wind_plugin", "windDirectionMean"],
-    "windDirectionVariance": ["sdf", "world", "plugin", "wind_plugin", "windDirectionVariance"],
-    "windGustStart": ["sdf", "world", "plugin", "wind_plugin", "windGustStart"],
-    "windGustDuration": ["sdf", "world", "plugin", "wind_plugin", "windGustDuration"],
-    "windGustVelocityMean": ["sdf", "world", "plugin", "wind_plugin", "windGustVelocityMean"],
-    "windGustVelocityMax": ["sdf", "world", "plugin", "wind_plugin", "windGustVelocityMax"],
-    "windGustVelocityVariance": ["sdf", "world", "plugin", "wind_plugin", "windGustVelocityVariance"],
-    "windGustDirectionMean": ["sdf", "world", "plugin", "wind_plugin", "windGustDirectionMean"],
-    "windGustDirectionVariance": ["sdf", "world", "plugin", "wind_plugin", "windGustDirectionVariance"]
+    "windVelocityMean": ["sdf", "world", "plugin", "windVelocityMean"],
+    "windVelocityMax": ["sdf", "world", "plugin", "windVelocityMax"],
+    "windVelocityVariance": ["sdf", "world", "plugin", "windVelocityVariance"],
+    "windDirectionMean": ["sdf", "world", "plugin", "windDirectionMean"],
+    "windDirectionVariance": ["sdf", "world", "plugin", "windDirectionVariance"],
+    "windGustStart": ["sdf", "world", "plugin", "windGustStart"],
+    "windGustDuration": ["sdf", "world", "plugin", "windGustDuration"],
+    "windGustVelocityMean": ["sdf", "world", "plugin", "windGustVelocityMean"],
+    "windGustVelocityMax": ["sdf", "world", "plugin", "windGustVelocityMax"],
+    "windGustVelocityVariance": ["sdf", "world", "plugin", "windGustVelocityVariance"],
+    "windGustDirectionMean": ["sdf", "world", "plugin", "windGustDirectionMean"],
+    "windGustDirectionVariance": ["sdf", "world", "plugin", "windGustDirectionVariance"]
 }
 
 IMU = {
@@ -55,13 +55,13 @@ IMU = {
 }
 
 GPS = {
-    "gpsNoise":  ["sdf", "model", "link", "plugin", "gps_plugin", "gpsNoise"],
-    "gpsXYRandomWalk":  ["sdf", "model", "link", "plugin", "gps_plugin", "gpsXYRandomWalk"],
-    "gpsZRandomWalk":  ["sdf", "model", "link", "plugin", "gps_plugin", "gpsZRandomWalk"],
-    "gpsXYNoiseDensity":  ["sdf", "model", "link", "plugin", "gps_plugin", "gpsXYNoiseDensity"],
-    "gpsZNoiseDensity":  ["sdf", "model", "link", "plugin", "gps_plugin", "gpsZNoiseDensity"],
-    "gpsVXYNoiseDensity":  ["sdf", "model", "link", "plugin", "gps_plugin", "gpsVXYNoiseDensity"],
-    "gpsVZNoiseDensity":  ["sdf", "model", "link", "plugin", "gps_plugin", "gpsVZNoiseDensity"]
+    "gpsNoise":  ["sdf", "model", "link", "sensor", "plugin", "gpsNoise"],
+    "gpsXYRandomWalk":  ["sdf", "model", "link", "sensor", "plugin", "gpsXYRandomWalk"],
+    "gpsZRandomWalk":  ["sdf", "model", "link", "sensor", "plugin", "gpsZRandomWalk"],
+    "gpsXYNoiseDensity":  ["sdf", "model", "link", "sensor", "plugin", "gpsXYNoiseDensity"],
+    "gpsZNoiseDensity":  ["sdf", "model", "link", "sensor", "plugin", "gpsZNoiseDensity"],
+    "gpsVXYNoiseDensity":  ["sdf", "model", "link", "sensor", "plugin", "gpsVXYNoiseDensity"],
+    "gpsVZNoiseDensity":  ["sdf", "model", "link", "sensor", "plugin", "gpsVZNoiseDensity"]
 }
 
 files = {

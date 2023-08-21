@@ -22,41 +22,41 @@ class Modifier():
             datefmt='%Y-%m-%d %H:%M:%S'
         )
         self.logger = logging.getLogger('Modifier')
-        self.logger.setLevel(logging.DEBUG)
+        self.logger.setLevel(logging.INFO)
 
-    def _convert_to_json(self, sdf_file_path):
+    def _convert_to_dict(self, sdf_file_path):
         """
-        Convert an SDF file to a JSON-like structure using xmltodict.
+        Convert an SDF file to a dict-like structure using xmltodict.
 
         Args:
             sdf_file_path (str): Path to the SDF file.
 
         Returns:
-            dict: The JSON-like representation of the SDF content.
+            dict: The dict representation of the SDF content.
         """
         try:
             with open(sdf_file_path, "rt") as file:
                 buffer = file.read()
-                sdf_json = xmltodict.parse(buffer)
-            return sdf_json
+                sdf_dict = xmltodict.parse(buffer)
+            return sdf_dict
         except Exception as e:
             self.logger.error(e)
             return 1
     
-    def _save_sdf(self, sdf_file_path, sdf_json):
+    def _save_sdf(self, sdf_file_path, sdf_dict):
         """
-        Save a JSON-like structure as an SDF file.
+        Save a dict structure as an SDF file.
 
         Args:
             sdf_file_path (str): Path to the original SDF file.
-            sdf_json (dict): The JSON-like structure to be saved.
+            sdf_dict (dict): The sdf_dict structure to be saved.
 
         Returns:
             int: 0 if successful, 1 if failed.
         """
         try:
             with open(sdf_file_path.replace(".sdf", "_modified.sdf"), 'w') as file:
-                file.write(xmltodict.unparse(sdf_json, pretty=True))
+                file.write(xmltodict.unparse(sdf_dict, pretty=True))
                 return 0
         except Exception as e:
             self.logger.error(e)
@@ -74,29 +74,33 @@ class Modifier():
         Returns:
             None
         """
-        sdf_json = self._convert_to_json(sdf_file_path)
-        current_level = sdf_json
-        for p in p_path[:-1]:
+        sdf_dict = self._convert_to_dict(sdf_file_path)
+        current_level = sdf_dict
+        number_of_path_elements = len(p_path[:-1])
+        for counter, p in enumerate(p_path[:-1]):
             if isinstance(current_level, dict) and p in current_level:
                 current_level = current_level[p]
-            elif isinstance(current_level, list):
+            elif isinstance(current_level, list) and counter < number_of_path_elements:
                 for attr in current_level:
                     if p in attr["@name"]:
                         current_level = attr
                         break
+            elif isinstance(current_level, list) and counter == number_of_path_elements:
+                pass
             else:
-                self.logger.error(f"Error: '{p}' not found in the current JSON level.")
+                self.logger.error(f"Error: '{p}' not found in the current dict level.")
+                self.logger.error(f"{current_level}")
                 break
 
-        self.logger.debug(f"Chaning {p_path[-1]} to {p_value}")
+        self.logger.info(f"Setting {p_path[-1]} to {p_value}")
 
-        if isinstance(current_level[p_path[-1]], (str, int, float)):
+        if isinstance(current_level[p_path[-1]], (str, int, float, list)):
             current_level[p_path[-1]] = p_value
 
-            if self._save_sdf(sdf_file_path, sdf_json) == 0:
-                self.logger.info("SDF file modified and saved successfully.")
+            if self._save_sdf(sdf_file_path, sdf_dict) == 0:
+                self.logger.debug(f"{p_path[-1]} Saved in the SDF file successfully.")
             else:
-                self.logger.error("Failed to save modified SDF file.")
+                self.logger.error("Failed to save the SDF file.")
         else:
             self.logger.error("Target parameter is not a valid scalar value.")
 

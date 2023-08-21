@@ -16,14 +16,18 @@
 			<windVelocityMean>4.0</windVelocityMean>
 			<windVelocityMax>20.0</windVelocityMax>
 			<windVelocityVariance>0</windVelocityVariance>
-			<windDirectionMean>1 1 0</windDirectionMean>
+			<windDirectionMean>1</windDirectionMean>
+			<windDirectionMean>1</windDirectionMean>
+			<windDirectionMean>0</windDirectionMean>
 			<windDirectionVariance>0</windDirectionVariance>
 			<windGustStart>0</windGustStart>
 			<windGustDuration>0</windGustDuration>
 			<windGustVelocityMean>5.0</windGustVelocityMean>
 			<windGustVelocityMax>20.0</windGustVelocityMax>
 			<windGustVelocityVariance>0</windGustVelocityVariance>
-			<windGustDirectionMean>1 0 0</windGustDirectionMean>
+			<windGustDirectionMean>1</windGustDirectionMean>
+			<windGustDirectionMean>0</windGustDirectionMean>
+			<windGustDirectionMean>0</windGustDirectionMean>
 			<windGustDirectionVariance>0</windGustDirectionVariance>
 			<windPubTopic>world_wind</windPubTopic>
 		</plugin>
