@@ -76,12 +76,11 @@ class Modifier():
         """
         sdf_dict = self._convert_to_dict(sdf_file_path)
         current_level = sdf_dict
-        number_of_path_elements = len(p_path[:-1])
 
-        for counter, p in enumerate(p_path[:-1]):
+        for p in p_path[:-1]:
             if isinstance(current_level, dict) and p in current_level:
                 current_level = current_level[p]
-            elif isinstance(current_level, list) and counter < number_of_path_elements:
+            elif isinstance(current_level, list):
                 for attr in current_level:
                     if p in attr["@name"]:
                         current_level = attr
