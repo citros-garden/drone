@@ -79,8 +79,11 @@ class Modifier():
         for p in p_path[:-1]:
             if isinstance(current_level, dict) and p in current_level:
                 current_level = current_level[p]
-            elif isinstance(current_level, list) and isinstance(p, int) and p < len(current_level):
-                current_level = current_level[p]
+            elif isinstance(current_level, list):
+                for attr in current_level:
+                    if p in attr["@name"]:
+                        current_level = attr
+                        break
             else:
                 self.logger.error(f"Error: '{p}' not found in the current JSON level.")
                 break
@@ -99,7 +102,7 @@ class Modifier():
 
 if __name__ == "__main__":
     sdf_file_path = "/workspaces/drone/ros2_ws/src/rigid_body_config/rigid_body_config/iris_modified.sdf"
-    parameter_path = ["sdf", "model", "link", 0, "inertial", "inertia", "ixx"]
-    parameter_value = 1.0
+    parameter_path = ["sdf", "model", "link", "base_link", "inertial", "inertia", "ixx"]
+    parameter_value = 5.0
     mod = Modifier()
     mod.change_parameter(sdf_file_path, parameter_path, parameter_value)

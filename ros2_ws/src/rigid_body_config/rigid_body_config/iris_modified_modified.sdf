@@ -7,7 +7,7 @@
 				<pose>0 0 0 0 0 0</pose>
 				<mass>1.5</mass>
 				<inertia>
-					<ixx>1.0</ixx>
+					<ixx>5.0</ixx>
 					<ixy>6e-05</ixy>
 					<ixz>1e-07</ixz>
 					<iyy>1.78</iyy>
