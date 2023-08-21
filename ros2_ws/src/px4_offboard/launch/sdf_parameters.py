@@ -1,29 +1,45 @@
-RIGID_BODY_IXX = ["sdf", "model", "link", 0, "inertial", "inertia", "ixx"]
-RIGID_BODY_IXY = ["sdf", "model", "link", 0, "inertial", "inertia", "ixy"]
-RIGID_BODY_IXZ = ["sdf", "model", "link", 0, "inertial", "inertia", "ixz"]
-RIGID_BODY_IYY = ["sdf", "model", "link", 0, "inertial", "inertia", "iyy"]
-RIGID_BODY_IYZ = ["sdf", "model", "link", 0, "inertial", "inertia", "iyz"]
-RIGID_BODY_IZZ = ["sdf", "model", "link", 0, "inertial", "inertia", "izz"]
-RIGID_BODY_MASS = ["sdf", "model", "link", 0, "inertial", "inertia", "mass"]
+RIGID_BODY = {
+        "ixx": ["sdf", "model", "link", "base_link", "inertial", "inertia", "ixx"],
+        "ixy": ["sdf", "model", "link", "base_link", "inertial", "inertia", "ixy"],
+        "ixz": ["sdf", "model", "link", "base_link", "inertial", "inertia", "ixz"],
+        "iyy": ["sdf", "model", "link", "base_link", "inertial", "inertia", "iyy"],
+        "iyz": ["sdf", "model", "link", "base_link", "inertial", "inertia", "iyz"],
+        "izz": ["sdf", "model", "link", "base_link", "inertial", "inertia", "izz"],
+        "mass":  ["sdf", "model", "link", "base_link", "inertial", "inertia", "mass"]
+}
 
-WORLD_WIND_VELOCITY_MEAN = ["sdf", "world", "plugin", "windVelocityMean"]
-WORLD_WIND_VELOCITY_MAX = ["sdf", "world", "plugin", "windVelocityMax"]
-WORLD_WIND_VELOCITY_VARIANCE = ["sdf", "world", "plugin", "windVelocityVariance"]
-WORLD_WIND_DIRECTION_MEAN = ["sdf", "world", "plugin", "windDirectionMean"]
-WORLD_WIND_DIRECTION_VARIANCE = ["sdf", "world", "plugin", "windDirectionVariance"]
-WORLD_WIND_GUST_START = ["sdf", "world", "plugin", "windGustStart"]
-WORLD_WIND_GUST_DURATION = ["sdf", "world", "plugin", "windGustDuration"]
-WORLD_WIND_GUST_VELOCITY_MEAN = ["sdf", "world", "plugin", "windGustVelocityMean"]
-WORLD_WIND_GUST_VELOCITY_MAX = ["sdf", "world", "plugin", "windGustVelocityMax"]
-WORLD_WIND_GUST_VELOCITY_VARIANCE = ["sdf", "world", "plugin", "windGustVelocityVariance"]
-WORLD_WIND_GUST_DIRECTION_MEAN = ["sdf", "world", "plugin", "windGustDirectionMean"]
-WORLD_WIND_GUST_DIRECTION_VARIANCE = ["sdf", "world", "plugin", "windGustDirectionVariance"]
+WORLD = {
+        "windVelocityMean": ["sdf", "world", "plugin", "wind_plugin", "windVelocityMean"],
+        "windVelocityMax": ["sdf", "world", "plugin", "wind_plugin", "windVelocityMax"],
+        "windVelocityVariance": ["sdf", "world", "plugin", "wind_plugin", "windVelocityVariance"],
+        "windDirectionMean": ["sdf", "world", "plugin", "wind_plugin", "windDirectionMean"],
+        "windDirectionVariance": ["sdf", "world", "plugin", "wind_plugin", "windDirectionVariance"],
+        "windGustStart": ["sdf", "world", "plugin", "wind_plugin", "windGustStart"],
+        "windGustDuration": ["sdf", "world", "plugin", "wind_plugin", "windGustDuration"],
+        "windGustVelocityMean": ["sdf", "world", "plugin", "wind_plugin", "windGustVelocityMean"],
+        "windGustVelocityMax": ["sdf", "world", "plugin", "wind_plugin", "windGustVelocityMax"],
+        "windGustVelocityVariance": ["sdf", "world", "plugin", "wind_plugin", "windGustVelocityVariance"],
+        "windGustDirectionMean": ["sdf", "world", "plugin", "wind_plugin", "windGustDirectionMean"],
+        "windGustDirectionVariance": ["sdf", "world", "plugin", "wind_plugin", "windGustDirectionVariance"]
+}
 
-SENSORS_IMU_GYRO_NOISE_DENSITY = ["sdf", "model", "plugin", -1, "gyroscopeNoiseDensity"]
-SENSORS_IMU_GYRO_RANDOM_WALK = ["sdf", "model", "plugin", -1, "gyroscopeRandomWalk"]
-SENSORS_IMU_GYRO_BIAS_CORRELATION_TIME = ["sdf", "model", "plugin", -1, "gyroscopeBiasCorrelationTime"]
-SENSORS_IMU_GYRO_TURN_ON_BIAS_SIGMA = ["sdf", "model", "plugin", -1, "gyroscopeTurnOnBiasSigma"]
-SENSORS_IMU_ACCEL_NOISE_DENSITY = ["sdf", "model", "plugin", -1, "accelerometerNoiseDensity"]
-SENSORS_IMU_ACCEL_RANDOM_WALK = ["sdf", "model", "plugin", -1, "accelerometerRandomWalk"]
-SENSORS_IMU_ACCEL_BIAS_CORRELATION_TIME = ["sdf", "model", "plugin", -1, "accelerometerBiasCorrelationTime"]
-SENSORS_IMU_ACCEL_TURN_ON_BIAS_SIGMA = ["sdf", "model", "plugin", -1, "accelerometerTurnOnBiasSigma"]
+IMU = {
+        "gyroscopeNoiseDensity":  ["sdf", "model", "plugin", "rotors_gazebo_imu_plugin", "gyroscopeNoiseDensity"],
+        "gyroscopeRandomWalk":  ["sdf", "model", "plugin", "rotors_gazebo_imu_plugin", "gyroscopeRandomWalk"],
+        "gyroscopeBiasCorrelationTime":  ["sdf", "model", "plugin", "rotors_gazebo_imu_plugin", "gyroscopeBiasCorrelationTime"],
+        "gyroscopeTurnOnBiasSigma":  ["sdf", "model", "plugin", "rotors_gazebo_imu_plugin", "gyroscopeTurnOnBiasSigma"],
+        "accelerometerNoiseDensity":  ["sdf", "model", "plugin", "rotors_gazebo_imu_plugin", "accelerometerNoiseDensity"],
+        "accelerometerRandomWalk":  ["sdf", "model", "plugin", "rotors_gazebo_imu_plugin", "accelerometerRandomWalk"],
+        "accelerometerBiasCorrelationTime":  ["sdf", "model", "plugin", "rotors_gazebo_imu_plugin", "accelerometerBiasCorrelationTime"],
+        "accelerometerTurnOnBiasSigma":  ["sdf", "model", "plugin", "rotors_gazebo_imu_plugin", "accelerometerTurnOnBiasSigma"]
+}
+
+GPS = {
+        "gpsNoise":  ["sdf", "model", "link", "plugin", "gps_plugin", "gpsNoise"],
+        "gpsXYRandomWalk":  ["sdf", "model", "link", "plugin", "gps_plugin", "gpsXYRandomWalk"],
+        "gpsZRandomWalk":  ["sdf", "model", "link", "plugin", "gps_plugin", "gpsZRandomWalk"],
+        "gpsXYNoiseDensity":  ["sdf", "model", "link", "plugin", "gps_plugin", "gpsXYNoiseDensity"],
+        "gpsZNoiseDensity":  ["sdf", "model", "link", "plugin", "gps_plugin", "gpsZNoiseDensity"],
+        "gpsVXYNoiseDensity":  ["sdf", "model", "link", "plugin", "gps_plugin", "gpsVXYNoiseDensity"],
+        "gpsVZNoiseDensity":  ["sdf", "model", "link", "plugin", "gps_plugin", "gpsVZNoiseDensity"]
+}

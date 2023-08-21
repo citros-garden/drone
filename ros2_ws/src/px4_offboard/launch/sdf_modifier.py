@@ -88,7 +88,7 @@ class Modifier():
                 self.logger.error(f"Error: '{p}' not found in the current JSON level.")
                 break
 
-        self.logger.info(f"Chaning {p_path[-1]} to {p_value}")
+        self.logger.debug(f"Chaning {p_path[-1]} to {p_value}")
 
         if isinstance(current_level[p_path[-1]], (str, int, float)):
             current_level[p_path[-1]] = p_value
