@@ -1,4 +1,5 @@
 import xmltodict
+import logging
 
 class Modifier():
     """
@@ -12,8 +13,18 @@ class Modifier():
         p_path (list): List of keys representing the path to the parameter to be modified.
         p_value (float/int/str): New value to set for the parameter.
     """
-    @staticmethod
-    def _set_nested_value(json_obj, path, value):
+
+    def __init__(self):
+        logging.basicConfig(
+            # filename='app.log',
+            level=logging.DEBUG,
+            format='%(asctime)s - %(levelname)s - %(message)s',
+            datefmt='%Y-%m-%d %H:%M:%S'
+        )
+        self.logger = logging.getLogger('Modifier')
+        self.logger.setLevel(logging.DEBUG)
+    
+    def _set_nested_value(self, json_obj, path, value):
         """
         Set a nested value in a JSON-like object.
 
@@ -34,8 +45,7 @@ class Modifier():
         current_level[path[-1]] = value
         return json_obj
 
-    @staticmethod
-    def _convert_to_json(sdf_file_path):
+    def _convert_to_json(self, sdf_file_path):
         """
         Convert an SDF file to a JSON-like structure using xmltodict.
 
@@ -51,11 +61,10 @@ class Modifier():
                 sdf_json = xmltodict.parse(buffer)
             return sdf_json
         except Exception as e:
-            print(e)
+            self.logger.error(e)
             return 1
     
-    @staticmethod
-    def _save_sdf(sdf_file_path, sdf_json):
+    def _save_sdf(self, sdf_file_path, sdf_json):
         """
         Save a JSON-like structure as an SDF file.
 
@@ -71,11 +80,10 @@ class Modifier():
                 file.write(xmltodict.unparse(sdf_json, pretty=True))
                 return 0
         except Exception as e:
-            print(e)
+            self.logger.error(e)
             return 1
         
-    @classmethod
-    def change_parameter(cls, sdf_file_path, p_path, p_value):
+    def change_parameter(self, sdf_file_path, p_path, p_value):
         """
         Change a parameter value in the SDF file and save the modified SDF.
 
@@ -87,7 +95,7 @@ class Modifier():
         Returns:
             None
         """
-        sdf_json = cls._convert_to_json(sdf_file_path)
+        sdf_json = self._convert_to_json(sdf_file_path)
         current_level = sdf_json
         for p in p_path:
             if isinstance(current_level, dict) and p in current_level:
@@ -95,21 +103,22 @@ class Modifier():
             elif isinstance(current_level, list) and isinstance(p, int) and p < len(current_level):
                 current_level = current_level[p]
             else:
-                print(f"Error: '{p}' not found in the current JSON level.")
+                self.logger.error(f"Error: '{p}' not found in the current JSON level.")
                 break
 
         if isinstance(current_level, (str, int, float)):
-            sdf_json = cls._set_nested_value(sdf_json, p_path, p_value)
+            sdf_json = self._set_nested_value(sdf_json, p_path, p_value)
 
-            if cls._save_sdf(sdf_file_path, sdf_json) == 0:
-                print("SDF file modified and saved successfully.")
+            if self._save_sdf(sdf_file_path, sdf_json) == 0:
+                self.logger.info("SDF file modified and saved successfully.")
             else:
-                print("Failed to save modified SDF file.")
+                self.logger.error("Failed to save modified SDF file.")
         else:
-            print("Target parameter is not a valid scalar value.")
+            self.logger.error("Target parameter is not a valid scalar value.")
 
 if __name__ == "__main__":
     sdf_file_path = "/workspaces/drone/ros2_ws/src/rigid_body_config/rigid_body_config/iris_modified.sdf"
     parameter_path = ["sdf", "model", "link", 0, "inertial", "inertia", "ixx"]
     parameter_value = 10.0
-    Modifier.change_parameter(sdf_file_path, parameter_path, parameter_value)
+    mod = Modifier()
+    mod.change_parameter(sdf_file_path, parameter_path, parameter_value)
