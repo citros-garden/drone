@@ -1,7 +1,7 @@
 import xmltodict
 import logging
-import config as cfg
 import yaml
+import json
 
 class Modifier():
     """
@@ -25,8 +25,13 @@ class Modifier():
     _logger = logging.getLogger('Modifier')
     _logger.setLevel(logging.INFO)
 
-    @classmethod
-    def _convert_to_dict(cls, sdf_file_path):
+    @staticmethod
+    def _parse_json(config_json):
+        with open(config_json, 'r') as file:
+            return json.load(file)
+
+    @staticmethod
+    def _convert_to_dict(sdf_file_path):
         """
         Convert an SDF file to a dict-like structure using xmltodict.
 
@@ -42,11 +47,11 @@ class Modifier():
                 sdf_dict = xmltodict.parse(buffer)
             return sdf_dict
         except Exception as e:
-            cls._logger.error(e)
+            Modifier._logger.error(e)
             return 1
     
-    @classmethod
-    def _save_sdf(cls, sdf_file_path, sdf_dict):
+    @staticmethod
+    def _save_sdf(sdf_file_path, sdf_dict):
         """
         Save a dict structure as an SDF file.
 
@@ -62,7 +67,7 @@ class Modifier():
                 file.write(xmltodict.unparse(sdf_dict, pretty=True))
                 return 0
         except Exception as e:
-            cls._logger.error(e)
+            Modifier._logger.error(e)
             return 1
     
     @classmethod
@@ -112,8 +117,44 @@ class Modifier():
             cls._logger.error("Failed to save the SDF file.")
 
     @classmethod
-    def yaml_to_sdf(cls):
-        for key, val in cfg.files.items():
+    def yaml_to_sdf(cls, config_json):
+        """
+    Convert parameters from YAML files and apply them to an SDF file.
+
+    This method takes a configuration JSON object, which contains information
+    about YAML files and their associated paths within an SDF structure.
+    It reads YAML files, extracts parameter values, and updates the specified
+    SDF paths with these values.
+
+    Args:
+        config_json (dict): A dictionary containing configuration information.
+            Each key is associated with a YAML file path and an SDF structure path.
+
+    Returns:
+        None
+
+    Notes:
+        - The configuration JSON format:
+          {
+            "sdf_key_1": {
+                "yaml": "path_to_yaml_file_1",
+                "sdf": "path_to_sdf_file_1",
+                "path": {
+                    "parameter_key_1": ["sdf_path_to_parameter_1"],
+                    "parameter_key_2": ["sdf_path_to_parameter_2", "sdf_path_to_parameter_3"]
+                }
+            },
+            "sdf_key_2": {
+                ...
+            },
+            ...
+          }
+        - This method will log any encountered exceptions as errors.
+
+    Raises:
+        Exception: If there's an issue with parsing the YAML or updating the SDF.
+        """
+        for key, val in cls._parse_json(config_json).items():
             with open(val["yaml"], "r") as stream:
                 try:
                     yaml_parameters = yaml.safe_load(stream)[key]['ros__parameters']
@@ -126,7 +167,7 @@ class Modifier():
                     cls._logger.error(e)
 
 def main():
-     Modifier.yaml_to_sdf()
+     Modifier.yaml_to_sdf("/workspaces/drone/ros2_ws/src/px4_offboard/launch/config.json")
 
 if __name__ == "__main__":
     main()
