@@ -5,18 +5,37 @@ import json
 
 class Modifier():
     """
-    A utility class to convert SDF files, modify specified parameters, and save the changes.
+    A utility class for modifying SDF files using YAML-based parameter configuration.
+
+    This class provides methods to convert SDF files to dictionary-like structures,
+    change parameter values within the SDF structure, and apply parameters from YAML files.
 
     Usage:
-        ParameterConvertor.change_parameter(sdf_file_path, parameter_path, parameter_value)
+        Modifier.yaml_to_sdf(config_json)
 
     Attributes:
-        sdf_file_path (str): Path to the SDF file.
-        p_path (list): List of keys representing the path to the parameter to be modified.
-        p_value (float/int/str): New value to set for the parameter.
+        None
+
+    Methods:
+        _parse_json(config_json):
+            Parse a JSON file and return the parsed content as a dictionary.
+
+        _convert_to_dict(sdf_file_path):
+            Convert an SDF file to a dictionary-like structure using xmltodict.
+
+        _save_sdf(sdf_file_path, sdf_dict):
+            Save a dictionary-like structure as an SDF file.
+
+        _change_parameter(sdf_file_path, p_path, p_value):
+            Change a parameter value in the SDF file and save the modified SDF.
+
+        yaml_to_sdf(config_json):
+            Convert parameters from YAML files and apply them to an SDF file.
+
+    Notes:
+        - The Modifier class uses xmltodict for XML to dictionary conversion.
+        - This class logs errors and information during its operations.
     """
-
-
     logging.basicConfig(
         level=logging.DEBUG,
         format='%(asctime)s - %(levelname)s - %(message)s',
