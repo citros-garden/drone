@@ -82,5 +82,6 @@
     "[python]": {
         "editor.defaultFormatter": "ms-python.autopep8"
     },
-    "python.formatting.provider": "none"
+    "python.formatting.provider": "none",
+    "cmake.sourceDirectory": "/home/lulav/dev/citros-garden/drone/ros2_ws/build/micro_ros_agent/agent/src/xrceagent"
 }

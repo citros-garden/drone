@@ -8,12 +8,13 @@ git clone -b release/1.14 https://github.com/PX4/PX4-Autopilot.git
 cd PX4-Autopilot
 git submodule update --init --recursive
 
-# Installing Gazebo
-sudo apt-get install -y gazebo
-
 # Installing all PX4 deps and build SITL
 Tools/setup/ubuntu.sh --no-nuttx
-make px4_sitl gazebo
+DONT_RUN=1 make px4_sitl gazebo
+
+# Installing Gazebo
+sudo apt-get install -y gazebo
+DONT_RUN=1 make px4_sitl gazebo
 
 pip install setuptools==58.2.0
 
