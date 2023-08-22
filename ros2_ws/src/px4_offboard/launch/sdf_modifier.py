@@ -86,7 +86,7 @@ class Modifier():
             int: 0 if successful, 1 if failed.
         """
         try:
-            with open(sdf_file_path.replace(".sdf", "_modified.sdf"), 'w') as file:
+            with open(sdf_file_path, 'w') as file:
                 file.write(xmltodict.unparse(sdf_dict, pretty=True))
                 return 0
         except Exception as e:

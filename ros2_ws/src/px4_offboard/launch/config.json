@@ -2,7 +2,7 @@
     "rigid_body": 
         {
             "yaml": "/workspaces/drone/ros2_ws/src/rigid_body_config/config/params.yaml",
-            "sdf": "/workspaces/drone/PX4-Autopilot/Tools/simulation/gazebo-classic/sitl_gazebo-classic/models/iris/iris.sdf",
+            "sdf": "/workspaces/drone/PX4-Autopilot/Tools/simulation/gazebo-classic/sitl_gazebo-classic/models/iris/iris.sdf.jinja",
             "path": 
             {
                 "ixx": ["sdf", "model", "link", "base_link", "inertial", "inertia", "ixx"],
@@ -18,7 +18,7 @@
     "imu": 
         {
             "yaml": "/workspaces/drone/ros2_ws/src/sensors_config/config/params.yaml",
-            "sdf": "/workspaces/drone/PX4-Autopilot/Tools/simulation/gazebo-classic/sitl_gazebo-classic/models/iris/iris.sdf",
+            "sdf": "/workspaces/drone/PX4-Autopilot/Tools/simulation/gazebo-classic/sitl_gazebo-classic/models/iris/iris.sdf.jinja",
             "path": 
             {
                 "gyroscopeNoiseDensity":  ["sdf", "model", "plugin", "rotors_gazebo_imu_plugin", "gyroscopeNoiseDensity"],
