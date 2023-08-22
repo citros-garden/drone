@@ -1,7 +1,7 @@
 from launch import LaunchDescription, launch_description_sources
 import time
 from launch_ros.actions import Node
-from launch.actions import ExecuteProcess, EmitEvent, IncludeLaunchDescription, RegisterEventHandler, LogInfo
+from launch.actions import ExecuteProcess, EmitEvent, IncludeLaunchDescription, RegisterEventHandler, LogInfo, SetEnvironmentVariable
 from ament_index_python.packages import get_package_share_directory
 from launch.event_handlers import OnProcessExit
 from launch.events import Shutdown
@@ -95,6 +95,6 @@ def generate_launch_description():
     bridge_dir = get_package_share_directory('rosbridge_server')
     node_rosbridge =  IncludeLaunchDescription(launch_description_sources.FrontendLaunchDescriptionSource(bridge_dir + '/launch/rosbridge_websocket_launch.xml'))
 
-    ld = LaunchDescription([proc_px4, node_offboard, node_dds_agent, node_rosbridge,recorder, sys_shut_down])
+    ld = LaunchDescription([logger, proc_px4, node_offboard, node_dds_agent, node_rosbridge,recorder, sys_shut_down])
 
     return ld

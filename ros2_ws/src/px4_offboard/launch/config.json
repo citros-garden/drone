@@ -2,7 +2,7 @@
     "rigid_body": 
         {
             "yaml": "/workspaces/drone/ros2_ws/src/rigid_body_config/config/params.yaml",
-            "sdf": "/workspaces/drone/ros2_ws/src/rigid_body_config/rigid_body_config/iris.sdf",
+            "sdf": "/workspaces/drone/PX4-Autopilot/Tools/simulation/gazebo-classic/sitl_gazebo-classic/models/iris/iris.sdf",
             "path": 
             {
                 "ixx": ["sdf", "model", "link", "base_link", "inertial", "inertia", "ixx"],
@@ -18,7 +18,7 @@
     "imu": 
         {
             "yaml": "/workspaces/drone/ros2_ws/src/sensors_config/config/params.yaml",
-            "sdf": "/workspaces/drone/ros2_ws/src/rigid_body_config/rigid_body_config/iris.sdf",
+            "sdf": "/workspaces/drone/PX4-Autopilot/Tools/simulation/gazebo-classic/sitl_gazebo-classic/models/iris/iris.sdf",
             "path": 
             {
                 "gyroscopeNoiseDensity":  ["sdf", "model", "plugin", "rotors_gazebo_imu_plugin", "gyroscopeNoiseDensity"],
@@ -35,7 +35,7 @@
     "gps": 
         {
             "yaml": "/workspaces/drone/ros2_ws/src/sensors_config/config/params.yaml",
-            "sdf": "/workspaces/drone/ros2_ws/src/sensors_config/sensors_config/gps.sdf",
+            "sdf": "/workspaces/drone/PX4-Autopilot/Tools/simulation/gazebo-classic/sitl_gazebo-classic/models/gps/gps.sdf",
             "path": 
             {
                 "gpsNoise":  ["sdf", "model", "link", "sensor", "plugin", "gpsNoise"],
@@ -51,7 +51,7 @@
     "world": 
         {
             "yaml": "/workspaces/drone/ros2_ws/src/world_config/config/params.yaml",
-            "sdf": "/workspaces/drone/ros2_ws/src/world_config/world_config/empty.world",
+            "sdf": "/workspaces/drone/PX4-Autopilot/Tools/simulation/gazebo-classic/sitl_gazebo-classic/worlds/empty.world",
             "path": 
             {
                 "windVelocityMean": ["sdf", "world", "plugin", "windVelocityMean"],
