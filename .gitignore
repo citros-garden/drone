@@ -16,4 +16,6 @@ db/
 
 app.log
 
+PX4-Autopilot/
+
 .citros/
