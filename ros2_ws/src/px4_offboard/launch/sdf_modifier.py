@@ -1,5 +1,7 @@
 import xmltodict
 import logging
+import config as cfg
+import yaml
 
 class Modifier():
     """
@@ -14,17 +16,17 @@ class Modifier():
         p_value (float/int/str): New value to set for the parameter.
     """
 
-    def __init__(self):
-        logging.basicConfig(
-            # filename='app.log',
-            level=logging.DEBUG,
-            format='%(asctime)s - %(levelname)s - %(message)s',
-            datefmt='%Y-%m-%d %H:%M:%S'
-        )
-        self.logger = logging.getLogger('Modifier')
-        self.logger.setLevel(logging.INFO)
 
-    def _convert_to_dict(self, sdf_file_path):
+    logging.basicConfig(
+        level=logging.DEBUG,
+        format='%(asctime)s - %(levelname)s - %(message)s',
+        datefmt='%Y-%m-%d %H:%M:%S'
+    )
+    _logger = logging.getLogger('Modifier')
+    _logger.setLevel(logging.INFO)
+
+    @classmethod
+    def _convert_to_dict(cls, sdf_file_path):
         """
         Convert an SDF file to a dict-like structure using xmltodict.
 
@@ -40,10 +42,11 @@ class Modifier():
                 sdf_dict = xmltodict.parse(buffer)
             return sdf_dict
         except Exception as e:
-            self.logger.error(e)
+            cls._logger.error(e)
             return 1
     
-    def _save_sdf(self, sdf_file_path, sdf_dict):
+    @classmethod
+    def _save_sdf(cls, sdf_file_path, sdf_dict):
         """
         Save a dict structure as an SDF file.
 
@@ -59,10 +62,11 @@ class Modifier():
                 file.write(xmltodict.unparse(sdf_dict, pretty=True))
                 return 0
         except Exception as e:
-            self.logger.error(e)
+            cls._logger.error(e)
             return 1
-        
-    def change_parameter(self, sdf_file_path, p_path, p_value):
+    
+    @classmethod
+    def _change_parameter(cls, sdf_file_path, p_path, p_value):
         """
         Change a parameter value in the SDF file and save the modified SDF.
 
@@ -74,7 +78,7 @@ class Modifier():
         Returns:
             None
         """
-        sdf_dict = self._convert_to_dict(sdf_file_path)
+        sdf_dict = cls._convert_to_dict(sdf_file_path)
         current_level = sdf_dict
 
         for p in p_path[:-1]:
@@ -86,30 +90,43 @@ class Modifier():
                         current_level = attr
                         break
             else:
-                self.logger.error(f"{current_level}: '{p}' not found in the current dict level.")
+                cls._logger.error(f"{current_level}: '{p}' not found in the current dict level.")
                 break
 
-        self.logger.info(f"Setting {p_path[-1]} to {p_value}")
+        cls._logger.info(f"Setting {p_path[-1]} to {p_value}")
 
         if isinstance(p_value, (str, int, float)):
             current_level[p_path[-1]] = p_value
                 
         elif isinstance(p_value, list):
-            self.logger.debug(f"Element {p_path[-1]} element is a list")
+            cls._logger.debug(f"Element {p_path[-1]} element is a list")
             current_level[p_path[-1]] = ' '.join(str(x) for x in p_value)
 
         else:
-            self.logger.error("Target parameter is not a valid scalar value.")
+            cls._logger.error("Target parameter is not a valid scalar value.")
             return
 
-        if self._save_sdf(sdf_file_path, sdf_dict) == 0:
-            self.logger.debug(f"{p_path[-1]} Saved in the SDF file successfully.")
+        if cls._save_sdf(sdf_file_path, sdf_dict) == 0:
+            cls._logger.debug(f"{p_path[-1]} Saved in the SDF file successfully.")
         else:
-            self.logger.error("Failed to save the SDF file.")
+            cls._logger.error("Failed to save the SDF file.")
+
+    @classmethod
+    def yaml_to_sdf(cls):
+        for key, val in cfg.files.items():
+            with open(val["yaml"], "r") as stream:
+                try:
+                    yaml_parameters = yaml.safe_load(stream)[key]['ros__parameters']
+                except yaml.YAMLError as exc:
+                    print(exc)
+            for k, v in yaml_parameters.items():
+                try:
+                    cls._change_parameter(val["sdf"], val["path"][k], v)
+                except Exception as e:
+                    cls._logger.error(e)
+
+def main():
+     Modifier.yaml_to_sdf()
 
 if __name__ == "__main__":
-    sdf_file_path = "/workspaces/drone/ros2_ws/src/rigid_body_config/rigid_body_config/iris_modified.sdf"
-    parameter_path = ["sdf", "model", "link", "base_link", "inertial", "inertia", "ixx"]
-    parameter_value = 5.0
-    mod = Modifier()
-    mod.change_parameter(sdf_file_path, parameter_path, parameter_value)
+    main()
