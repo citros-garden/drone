@@ -29,7 +29,7 @@ class Modifier():
         _change_parameter(sdf_file_path, p_path, p_value):
             Change a parameter value in the SDF file and save the modified SDF.
 
-        yaml_to_sdf(config_json):
+        change_sdf_parameters(config_json):
             Convert parameters from YAML files and apply them to an SDF file.
 
     Notes:
@@ -140,7 +140,7 @@ class Modifier():
             cls._logger.error("Failed to save the SDF file.")
 
     @classmethod
-    def yaml_to_sdf(cls, config_json):
+    def change_sdf_parameters(cls, config_json):
         """
     Convert parameters from YAML files and apply them to an SDF file.
 
@@ -190,7 +190,7 @@ class Modifier():
                     cls._logger.error(e)
 
 def main():
-     Modifier.yaml_to_sdf("/workspaces/drone/ros2_ws/src/px4_offboard/launch/config.json")
+     Modifier.change_sdf_parameters("/workspaces/drone/ros2_ws/src/px4_offboard/launch/config.json")
 
 if __name__ == "__main__":
     main()
