@@ -51,7 +51,7 @@
     "world": 
         {
             "yaml": "/workspaces/drone/ros2_ws/src/world_config/config/params.yaml",
-            "sdf": "/workspaces/drone/PX4-Autopilot/Tools/simulation/gazebo-classic/sitl_gazebo-classic/worlds/empty.world",
+            "sdf": "/workspaces/drone/PX4-Autopilot/Tools/simulation/gazebo-classic/sitl_gazebo-classic/worlds/windy.world",
             "path": 
             {
                 "windVelocityMean": ["sdf", "world", "plugin", "windVelocityMean"],

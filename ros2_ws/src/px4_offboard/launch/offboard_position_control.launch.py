@@ -53,7 +53,7 @@ time.sleep(1.0)
 def generate_launch_description():
 
     proc_px4 = ExecuteProcess(
-        cmd=['bash', '-c', f'cd /workspaces/drone/PX4-Autopilot && {mode} make px4_sitl gazebo'],
+        cmd=['bash', '-c', f'cd /workspaces/drone/PX4-Autopilot && {mode} make px4_sitl gazebo_iris__windy'],
         cwd='/tmp/px4',
         output='screen',
         emulate_tty=True
@@ -95,6 +95,6 @@ def generate_launch_description():
     bridge_dir = get_package_share_directory('rosbridge_server')
     node_rosbridge =  IncludeLaunchDescription(launch_description_sources.FrontendLaunchDescriptionSource(bridge_dir + '/launch/rosbridge_websocket_launch.xml'))
 
-    ld = LaunchDescription([logger, proc_px4, node_offboard, node_dds_agent, node_rosbridge,recorder, sys_shut_down])
+    ld = LaunchDescription([proc_px4, node_offboard, node_dds_agent, node_rosbridge,recorder, sys_shut_down])
 
     return ld
