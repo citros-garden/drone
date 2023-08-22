@@ -15,17 +15,17 @@ class Parser():
 
         parameters = parameters_raw['px4_config']['ros__parameters']
 
-        mc_pitchrate_p = f"\nparam set-default MC_PITCHRATE_P {parameters['MC_PITCHRATE_P']}\n"
-        mc_pitchrate_i = f"param set-default MC_PITCHRATE_I {parameters['MC_PITCHRATE_I']}\n"
-        mc_pitchrate_d = f"param set-default MC_PITCHRATE_D {parameters['MC_PITCHRATE_D']}\n"
-        mc_pitchrate_k = f"param set-default MC_PITCHRATE_K {parameters['MC_PITCHRATE_K']}\n"
-        mc_pitch_p     = f"param set-default MC_PITCH_P {parameters['MC_PITCH_P']}\n"
+        mc_pitchrate_p = f"param set-default MC_PITCHRATE_P {parameters['MC_PITCHRATE_P']}"
+        mc_pitchrate_i = f"param set-default MC_PITCHRATE_I {parameters['MC_PITCHRATE_I']}"
+        mc_pitchrate_d = f"param set-default MC_PITCHRATE_D {parameters['MC_PITCHRATE_D']}"
+        mc_pitchrate_k = f"param set-default MC_PITCHRATE_K {parameters['MC_PITCHRATE_K']}"
+        mc_pitch_p     = f"param set-default MC_PITCH_P {parameters['MC_PITCH_P']}"
 
-        mc_rollrate_p = f"param set-default MC_ROLLRATE_P {parameters['MC_ROLLRATE_P']}\n"
-        mc_rollrate_i = f"param set-default MC_ROLLRATE_I {parameters['MC_ROLLRATE_I']}\n"
-        mc_rollrate_d = f"param set-default MC_ROLLRATE_D {parameters['MC_ROLLRATE_D']}\n"
-        mc_rollrate_k = f"param set-default MC_ROLLRATE_K {parameters['MC_ROLLRATE_K']}\n"
-        mc_roll_p     = f"param set-default MC_ROLL_P {parameters['MC_ROLL_P']}\n"
+        mc_rollrate_p = f"param set-default MC_ROLLRATE_P {parameters['MC_ROLLRATE_P']}"
+        mc_rollrate_i = f"param set-default MC_ROLLRATE_I {parameters['MC_ROLLRATE_I']}"
+        mc_rollrate_d = f"param set-default MC_ROLLRATE_D {parameters['MC_ROLLRATE_D']}"
+        mc_rollrate_k = f"param set-default MC_ROLLRATE_K {parameters['MC_ROLLRATE_K']}"
+        mc_roll_p     = f"param set-default MC_ROLL_P {parameters['MC_ROLL_P']}"
 
         print("[px4-parameters] Writing: ", json.dumps(parameters, sort_keys=True, indent=1))
 
@@ -47,7 +47,8 @@ class Parser():
         new_lines = [x for x in self.config.values()]
 
         with open(self.iris_file_path, "a") as file:
-            file.writelines(new_lines)
+            for line in new_lines:
+                file.write('\n' + line)
 
 def main():
      parser = Parser()
