@@ -46,8 +46,12 @@ class Modifier():
 
     @staticmethod
     def _parse_json(config_json):
-        with open(config_json, 'r') as file:
-            return json.load(file)
+        try:
+            with open(config_json, 'r') as file:
+                return json.load(file)
+        except ValueError as e:
+            Modifier._logger.error(e)
+            return 1
 
     @staticmethod
     def _convert_to_dict(sdf_file_path):
