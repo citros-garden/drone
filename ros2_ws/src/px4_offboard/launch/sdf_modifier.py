@@ -2,6 +2,7 @@ import xmltodict
 import logging
 import yaml
 import json
+from typing import List, Union
 
 class Modifier():
     """
@@ -45,16 +46,16 @@ class Modifier():
     _logger.setLevel(logging.INFO)
 
     @staticmethod
-    def _parse_json(config_json):
+    def _parse_json(config_json: str) -> dict:
         try:
             with open(config_json, 'r') as file:
                 return json.load(file)
         except ValueError as e:
             Modifier._logger.error(e)
-            return 1
+            return {}
 
     @staticmethod
-    def _convert_to_dict(sdf_file_path):
+    def _convert_to_dict(sdf_file_path: str) -> dict: 
         """
         Convert an SDF file to a dict-like structure using xmltodict.
 
@@ -71,10 +72,10 @@ class Modifier():
             return sdf_dict
         except Exception as e:
             Modifier._logger.error(e)
-            return 1
+            return {}
     
     @staticmethod
-    def _save_sdf(sdf_file_path, sdf_dict):
+    def _save_sdf(sdf_file_path: str, sdf_dict: dict) -> int:
         """
         Save a dict structure as an SDF file.
 
@@ -94,7 +95,7 @@ class Modifier():
             return 1
     
     @classmethod
-    def _change_parameter(cls, sdf_file_path, p_path, p_value):
+    def _change_parameter(cls, sdf_file_path: str, p_path: List[str], p_value: Union[float, int, str]) -> None:
         """
         Change a parameter value in the SDF file and save the modified SDF.
 
@@ -140,7 +141,7 @@ class Modifier():
             cls._logger.error("Failed to save the SDF file.")
 
     @classmethod
-    def change_sdf_parameters(cls, config_json):
+    def change_sdf_parameters(cls, config_json: str) -> None:
         """
     Convert parameters from YAML files and apply them to an SDF file.
 
@@ -150,7 +151,7 @@ class Modifier():
     SDF paths with these values.
 
     Args:
-        config_json (dict): A dictionary containing configuration information.
+        config_json (str): A path to a dictionary containing configuration information.
             Each key is associated with a YAML file path and an SDF structure path.
 
     Returns:
