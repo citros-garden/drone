@@ -159,15 +159,15 @@ class Modifier():
     Notes:
         - The configuration JSON format:
           {
-            "sdf_key_1": {
+            "node_name_as_in_the_yaml_1": {
                 "yaml": "path_to_yaml_file_1",
                 "sdf": "path_to_sdf_file_1",
                 "path": {
                     "parameter_key_1": ["sdf_path_to_parameter_1"],
-                    "parameter_key_2": ["sdf_path_to_parameter_2", "sdf_path_to_parameter_3"]
+                    "parameter_key_2": ["sdf_path_to_parameter_2", "sdf_path_to_parameter_2"]
                 }
             },
-            "sdf_key_2": {
+            "node_name_as_in_the_yaml_2": {
                 ...
             },
             ...
