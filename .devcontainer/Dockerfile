@@ -44,7 +44,7 @@ RUN apt-get update && apt-get install -y \
   ros-humble-rosbag2-storage-mcap \
   && rm -rf /var/lib/apt/lists/* \
   && echo "source /usr/share/bash-completion/completions/git" >> /home/$USERNAME/.bashrc
-
+RUN pip install xmltodict
 RUN usermod -a -G video ros
 RUN apt update && apt upgrade -y ros-humble-rosidl*
 # Set up auto-source of workspace for ros user

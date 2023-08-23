@@ -14,4 +14,8 @@ ros2_ws/site/*
 
 db/
 
+app.log
+
+PX4-Autopilot/
+
 .citros/

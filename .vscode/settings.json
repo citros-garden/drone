@@ -66,7 +66,8 @@
         "uncrustify",
         "Wextra",
         "Wpedantic",
-        "xmllint"
+        "xmllint",
+        "xmltodict"
     ],
     "cSpell.allowCompoundWords": true,
     "cSpell.ignorePaths": [
@@ -77,5 +78,10 @@
         ".vscode",
         ".vscode-insiders",
         ".devcontainer/devcontainer.json"
-    ]
+    ],
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.autopep8"
+    },
+    "python.formatting.provider": "none",
+    "cmake.sourceDirectory": "/home/lulav/dev/citros-garden/drone/ros2_ws/build/micro_ros_agent/agent/src/xrceagent"
 }

@@ -3,23 +3,27 @@ WORKSPACE_DIR="/workspaces/drone/"
 
 cd $WORKSPACE_DIR
 
-# Adding PX4 as submodule
-git submodule add --force -b release/1.14 https://github.com/PX4/PX4-Autopilot.git
+# Adding PX4
+git clone -b release/1.14 https://github.com/PX4/PX4-Autopilot.git
 cd PX4-Autopilot
 git submodule update --init --recursive
 
-# Installing all PX4 deps
+# Installing all PX4 deps and build SITL
 Tools/setup/ubuntu.sh --no-nuttx
-make px4_sitl gazebo
+DONT_RUN=1 make px4_sitl gazebo
+
 # Installing Gazebo
 sudo apt-get install -y gazebo
+DONT_RUN=1 make px4_sitl gazebo
+
 pip install setuptools==58.2.0
 
+# compile ROS workspace
 cd ..
 cd ros2_ws
 colcon build
 cd ..
-# mkdir /tmp/px4
+sudo mkdir /tmp/px4
 
 echo "
 # ==============================================

@@ -1,0 +1,71 @@
+{
+    "rigid_body": 
+        {
+            "yaml": "/workspaces/drone/ros2_ws/src/rigid_body_config/config/params.yaml",
+            "sdf": "/workspaces/drone/PX4-Autopilot/Tools/simulation/gazebo-classic/sitl_gazebo-classic/models/iris/iris.sdf.jinja",
+            "path": 
+            {
+                "ixx": ["sdf", "model", "link", "base_link", "inertial", "inertia", "ixx"],
+                "ixy": ["sdf", "model", "link", "base_link", "inertial", "inertia", "ixy"],
+                "ixz": ["sdf", "model", "link", "base_link", "inertial", "inertia", "ixz"],
+                "iyy": ["sdf", "model", "link", "base_link", "inertial", "inertia", "iyy"],
+                "iyz": ["sdf", "model", "link", "base_link", "inertial", "inertia", "iyz"],
+                "izz": ["sdf", "model", "link", "base_link", "inertial", "inertia", "izz"],
+                "mass":  ["sdf", "model", "link", "base_link", "inertial", "mass"]
+            }
+        },
+              
+    "imu": 
+        {
+            "yaml": "/workspaces/drone/ros2_ws/src/sensors_config/config/params.yaml",
+            "sdf": "/workspaces/drone/PX4-Autopilot/Tools/simulation/gazebo-classic/sitl_gazebo-classic/models/iris/iris.sdf.jinja",
+            "path": 
+            {
+                "gyroscopeNoiseDensity":  ["sdf", "model", "plugin", "rotors_gazebo_imu_plugin", "gyroscopeNoiseDensity"],
+                "gyroscopeRandomWalk":  ["sdf", "model", "plugin", "rotors_gazebo_imu_plugin", "gyroscopeRandomWalk"],
+                "gyroscopeBiasCorrelationTime":  ["sdf", "model", "plugin", "rotors_gazebo_imu_plugin", "gyroscopeBiasCorrelationTime"],
+                "gyroscopeTurnOnBiasSigma":  ["sdf", "model", "plugin", "rotors_gazebo_imu_plugin", "gyroscopeTurnOnBiasSigma"],
+                "accelerometerNoiseDensity":  ["sdf", "model", "plugin", "rotors_gazebo_imu_plugin", "accelerometerNoiseDensity"],
+                "accelerometerRandomWalk":  ["sdf", "model", "plugin", "rotors_gazebo_imu_plugin", "accelerometerRandomWalk"],
+                "accelerometerBiasCorrelationTime":  ["sdf", "model", "plugin", "rotors_gazebo_imu_plugin", "accelerometerBiasCorrelationTime"],
+                "accelerometerTurnOnBiasSigma":  ["sdf", "model", "plugin", "rotors_gazebo_imu_plugin", "accelerometerTurnOnBiasSigma"]
+            }
+        },
+    
+    "gps": 
+        {
+            "yaml": "/workspaces/drone/ros2_ws/src/sensors_config/config/params.yaml",
+            "sdf": "/workspaces/drone/PX4-Autopilot/Tools/simulation/gazebo-classic/sitl_gazebo-classic/models/gps/gps.sdf",
+            "path": 
+            {
+                "gpsNoise":  ["sdf", "model", "link", "sensor", "plugin", "gpsNoise"],
+                "gpsXYRandomWalk":  ["sdf", "model", "link", "sensor", "plugin", "gpsXYRandomWalk"],
+                "gpsZRandomWalk":  ["sdf", "model", "link", "sensor", "plugin", "gpsZRandomWalk"],
+                "gpsXYNoiseDensity":  ["sdf", "model", "link", "sensor", "plugin", "gpsXYNoiseDensity"],
+                "gpsZNoiseDensity":  ["sdf", "model", "link", "sensor", "plugin", "gpsZNoiseDensity"],
+                "gpsVXYNoiseDensity":  ["sdf", "model", "link", "sensor", "plugin", "gpsVXYNoiseDensity"],
+                "gpsVZNoiseDensity":  ["sdf", "model", "link", "sensor", "plugin", "gpsVZNoiseDensity"]
+            }
+            },
+    
+    "world": 
+        {
+            "yaml": "/workspaces/drone/ros2_ws/src/world_config/config/params.yaml",
+            "sdf": "/workspaces/drone/PX4-Autopilot/Tools/simulation/gazebo-classic/sitl_gazebo-classic/worlds/windy.world",
+            "path": 
+            {
+                "windVelocityMean": ["sdf", "world", "plugin", "windVelocityMean"],
+                "windVelocityMax": ["sdf", "world", "plugin", "windVelocityMax"],
+                "windVelocityVariance": ["sdf", "world", "plugin", "windVelocityVariance"],
+                "windDirectionMean": ["sdf", "world", "plugin", "windDirectionMean"],
+                "windDirectionVariance": ["sdf", "world", "plugin", "windDirectionVariance"],
+                "windGustStart": ["sdf", "world", "plugin", "windGustStart"],
+                "windGustDuration": ["sdf", "world", "plugin", "windGustDuration"],
+                "windGustVelocityMean": ["sdf", "world", "plugin", "windGustVelocityMean"],
+                "windGustVelocityMax": ["sdf", "world", "plugin", "windGustVelocityMax"],
+                "windGustVelocityVariance": ["sdf", "world", "plugin", "windGustVelocityVariance"],
+                "windGustDirectionMean": ["sdf", "world", "plugin", "windGustDirectionMean"],
+                "windGustDirectionVariance": ["sdf", "world", "plugin", "windGustDirectionVariance"]
+            }
+        }
+}
