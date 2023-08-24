@@ -22,8 +22,11 @@ pip install setuptools==58.2.0
 cd ..
 cd ros2_ws
 colcon build
+sleep 1
+colcon build
 cd ..
 sudo mkdir /tmp/px4
+echo "source ros2_ws/install/local_setup.bash" >> ~/.bashrc
 
 echo "
 # ==============================================

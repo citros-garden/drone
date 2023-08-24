@@ -1,7 +1,7 @@
 from launch import LaunchDescription, launch_description_sources
 import time
 from launch_ros.actions import Node
-from launch.actions import ExecuteProcess, EmitEvent, IncludeLaunchDescription, RegisterEventHandler, LogInfo, SetEnvironmentVariable
+from launch.actions import ExecuteProcess, EmitEvent, IncludeLaunchDescription, RegisterEventHandler, LogInfo
 from ament_index_python.packages import get_package_share_directory
 from launch.event_handlers import OnProcessExit
 from launch.events import Shutdown
@@ -53,7 +53,7 @@ time.sleep(1.0)
 def generate_launch_description():
 
     proc_px4 = ExecuteProcess(
-        cmd=['bash', '-c', f'cd /workspaces/drone/PX4-Autopilot && {mode} make px4_sitl gazebo_iris__windy'],
+        cmd=['bash', '-c', f'cd /workspaces/drone/PX4-Autopilot && {mode} make px4_sitl gazebo-classic_iris__windy'],
         cwd='/tmp/px4',
         output='screen',
         emulate_tty=True
@@ -96,5 +96,4 @@ def generate_launch_description():
     node_rosbridge =  IncludeLaunchDescription(launch_description_sources.FrontendLaunchDescriptionSource(bridge_dir + '/launch/rosbridge_websocket_launch.xml'))
 
     ld = LaunchDescription([proc_px4, node_offboard, node_dds_agent, node_rosbridge,recorder, sys_shut_down])
-
     return ld
