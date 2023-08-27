@@ -119,7 +119,7 @@ class OffboardControl(Node):
         self.offboard_control_mode_publisher_.publish(msg)
         
     def engage_offBoard_mode(self):
-        self.get_logger().info('Offboard mode command sent')
+        self.get_logger().info('Offboard mode command sent', throttle_duration_sec=1.0)
         msg = VehicleCommand()
         msg.param1 = 1.0
         msg.param2 = 6.0
