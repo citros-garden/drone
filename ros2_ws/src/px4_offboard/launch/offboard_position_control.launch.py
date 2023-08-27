@@ -5,6 +5,8 @@ from launch.actions import ExecuteProcess, EmitEvent, IncludeLaunchDescription, 
 from ament_index_python.packages import get_package_share_directory
 from launch.event_handlers import OnProcessExit
 from launch.events import Shutdown
+import launch.logging
+import logging
 import os
 import sys
 
@@ -47,6 +49,8 @@ Modifier.change_sdf_parameters("/workspaces/drone/ros2_ws/src/px4_offboard/launc
 
 px4_parameter_parser = PX4Parser()
 px4_parameter_parser.parse()
+
+launch.logging.launch_config.level = logging.INFO
 
 time.sleep(1.0)
 
