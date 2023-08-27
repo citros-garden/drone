@@ -82,6 +82,7 @@ class OffboardControl(Node):
         self.nav_state = VehicleStatus.NAVIGATION_STATE_MAX
         self.arming_state = False
         self.bad_tries_to_offboard_counter_ = 0
+        self.maximum_number_of_offboard_tries = 15
 
     def vehicle_status_callback(self, msg):
         self.nav_state = msg.nav_state
@@ -126,7 +127,7 @@ class OffboardControl(Node):
         msg.timestamp = int(Clock().now().nanoseconds / 1000)
         self.vehicle_command_publisher_.publish(msg)
         
-    def engage_offBoard_mode(self):
+    def engage_offboard_mode(self):
         self.get_logger().info('Offboard mode command sent', throttle_duration_sec=1.0)
         msg = VehicleCommand()
         msg.param1 = 1.0
@@ -171,7 +172,6 @@ class OffboardControl(Node):
             exit()
         
         self.target_msg.position = current_setpoint
-        
         self.target_msg.timestamp = int(Clock().now().nanoseconds / 1000)
 
         self.offboard_state_msg.data = self.state.name
@@ -193,8 +193,8 @@ class OffboardControl(Node):
         if self.nav_state == VehicleStatus.NAVIGATION_STATE_OFFBOARD:
             self.flow()
 
-        elif self.bad_tries_to_offboard_counter_ < 15:
-            self.engage_offBoard_mode()
+        elif self.bad_tries_to_offboard_counter_ < self.maximum_number_of_offboard_tries:
+            self.engage_offboard_mode()
             self.bad_tries_to_offboard_counter_ += 1
         else:
             self.get_logger().error("Couldn't get into OFFBOARD, Aborting...")
