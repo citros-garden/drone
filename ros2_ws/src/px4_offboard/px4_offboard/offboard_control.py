@@ -4,9 +4,8 @@ import time
 from rclpy.node import Node
 from rclpy.clock import Clock
 from rclpy.qos import QoSProfile, QoSReliabilityPolicy, QoSHistoryPolicy, QoSDurabilityPolicy
-import subprocess
-import psutil
 from enum import Enum
+
 from std_msgs.msg import String
 from px4_msgs.msg import OffboardControlMode
 from px4_msgs.msg import TrajectorySetpoint
@@ -75,12 +74,12 @@ class OffboardControl(Node):
 
     def initialize_variables(self):
         self.position = None
+        self.arming_state = False
         self.state = State.P1
         self.target_msg = TrajectorySetpoint()
         self.offboard_state_msg = String()
-        self.repeats_counter = 0
         self.nav_state = VehicleStatus.NAVIGATION_STATE_MAX
-        self.arming_state = False
+        self.repeats_counter = 0
         self.bad_tries_to_offboard_counter_ = 0
         self.maximum_number_of_offboard_tries = 15
 
