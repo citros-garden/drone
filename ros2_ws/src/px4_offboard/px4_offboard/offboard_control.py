@@ -26,13 +26,26 @@ class OffboardControl(Node):
 
     def __init__(self):
         super().__init__('offboard_control')
+
+        qos_profile = self.create_qos_profile()
+
+        self.initialize_publishers_and_subscribers(qos_profile)
+        self.initialize_parameters()
+        self.initialize_variables()
+
+        self.timer = self.create_timer(self.timer_period, self.step)
+
+    @staticmethod
+    def create_qos_profile():
         qos_profile = QoSProfile(
             reliability=QoSReliabilityPolicy.BEST_EFFORT ,
             durability=QoSDurabilityPolicy.TRANSIENT_LOCAL,
-            history=QoSHistoryPolicy.KEEP_ALL,
-            depth=10
+            history=QoSHistoryPolicy.KEEP_LAST,
+            depth=1
         )
+        return qos_profile
 
+    def initialize_publishers_and_subscribers(self, qos_profile):
         self.status_sub = self.create_subscription(VehicleStatus,'/fmu/out/vehicle_status',self.vehicle_status_callback, qos_profile)
         self.local_position_sub_ = self.create_subscription(VehicleLocalPosition,'/fmu/out/vehicle_local_position' ,self.local_position_callback, qos_profile)
         self.control_mode_sub = self.create_subscription(VehicleControlMode, '/fmu/out/vehicle_control_mode', self.control_mode_callback, qos_profile)
@@ -40,8 +53,9 @@ class OffboardControl(Node):
         self.offboard_control_mode_publisher_ = self.create_publisher(OffboardControlMode, '/fmu/in/offboard_control_mode',qos_profile)
         self.trajectory_setpoint_publisher_ = self.create_publisher(TrajectorySetpoint, '/fmu/in/trajectory_setpoint',qos_profile)
         self.vehicle_command_publisher_ = self.create_publisher(VehicleCommand, '/fmu/in/vehicle_command',qos_profile)
-        self.state_publisher = self.create_publisher(String, '/offboard/state', 1)
+        self.state_publisher = self.create_publisher(String, '/offboard/state', qos_profile)
 
+    def initialize_parameters(self):
         self.declare_parameters(
             namespace='',
             parameters=[('p1_x', 0.0), ('p1_y', 0.0), ('p1_z', -10.0),
@@ -50,35 +64,25 @@ class OffboardControl(Node):
                         ('p4_x', 0.0), ('p4_y', 10.0), ('p4_z', -10.0),
                         ('repeats', 5), ('tolerance', 0.5), ('timer_period', 0.02),]
         )
-
-        timer_period = self.get_parameter('timer_period').value
-
-        self.position = None
-        self.state = State.P1
-
         self.setpoints = {"P1": [self.get_parameter('p1_x').value, self.get_parameter('p1_y').value, self.get_parameter('p1_z').value],
                           "P2": [self.get_parameter('p2_x').value, self.get_parameter('p2_y').value, self.get_parameter('p2_z').value],
                           "P3": [self.get_parameter('p3_x').value, self.get_parameter('p3_y').value, self.get_parameter('p3_z').value],
                           "P4": [self.get_parameter('p4_x').value, self.get_parameter('p4_y').value, self.get_parameter('p4_z').value],
                           "LAND": [0.0, 0.0, 0.0]}
-        
-        self.position_msg = TrajectorySetpoint()
-        self.offboard_state_msg = String()
-        
+        self.timer_period = self.get_parameter('timer_period').value
         self.tolerance = self.get_parameter('tolerance').value
         self.repeats = self.get_parameter('repeats').value
+
+    def initialize_variables(self):
+        self.position = None
+        self.state = State.P1
+        self.position_msg = TrajectorySetpoint()
+        self.offboard_state_msg = String()
         self.repeats_counter = 0
-        
         self.nav_state = VehicleStatus.NAVIGATION_STATE_MAX
         self.arming_state = False
-
         self.bad_tries_to_offboard_counter_ = 0
 
-        self.get_logger().info(f"Loaded Parameters:")
-        self.get_logger().info(f"\ttolerance: {self.tolerance}, repeats: {self.repeats}")
-
-        self.timer = self.create_timer(timer_period, self.step)
- 
     def vehicle_status_callback(self, msg):
         self.nav_state = msg.nav_state
         
