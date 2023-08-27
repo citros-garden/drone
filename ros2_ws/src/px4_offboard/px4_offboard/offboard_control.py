@@ -5,6 +5,7 @@ from rclpy.node import Node
 from rclpy.clock import Clock
 from rclpy.qos import QoSProfile, QoSReliabilityPolicy, QoSHistoryPolicy, QoSDurabilityPolicy
 import subprocess
+import psutil
 from enum import Enum
 from std_msgs.msg import String
 from px4_msgs.msg import OffboardControlMode
@@ -12,6 +13,7 @@ from px4_msgs.msg import TrajectorySetpoint
 from px4_msgs.msg import VehicleStatus
 from px4_msgs.msg import VehicleCommand
 from px4_msgs.msg import VehicleLocalPosition
+from px4_msgs.msg import VehicleControlMode
 
 class State(Enum):
     P1 = 1
@@ -33,6 +35,7 @@ class OffboardControl(Node):
 
         self.status_sub = self.create_subscription(VehicleStatus,'/fmu/out/vehicle_status',self.vehicle_status_callback, qos_profile)
         self.local_position_sub_ = self.create_subscription(VehicleLocalPosition,'/fmu/out/vehicle_local_position' ,self.local_position_callback, qos_profile)
+        self.control_mode_sub = self.create_subscription(VehicleControlMode, '/fmu/out/vehicle_control_mode', self.control_mode_callback, qos_profile)
 
         self.offboard_control_mode_publisher_ = self.create_publisher(OffboardControlMode, '/fmu/in/offboard_control_mode',qos_profile)
         self.trajectory_setpoint_publisher_ = self.create_publisher(TrajectorySetpoint, '/fmu/in/trajectory_setpoint',qos_profile)
@@ -67,12 +70,10 @@ class OffboardControl(Node):
         self.repeats_counter = 0
         
         self.nav_state = VehicleStatus.NAVIGATION_STATE_MAX
-        self.dt = timer_period
+        self.arming_state = False
 
-        self.offboard_setpoint_counter_ = 0
         self.bad_tries_to_offboard_counter_ = 0
 
-        time.sleep(15)
         self.get_logger().info(f"Loaded Parameters:")
         self.get_logger().info(f"\ttolerance: {self.tolerance}, repeats: {self.repeats}")
 
@@ -80,12 +81,16 @@ class OffboardControl(Node):
  
     def vehicle_status_callback(self, msg):
         self.nav_state = msg.nav_state
+        
+    def control_mode_callback(self, msg):
+        self.arming_state = msg.flag_armed
+        self.flag_control_offboard_enabled = msg.flag_control_offboard_enabled
 
     def local_position_callback(self, msg):
         self.position = [msg.x, msg.y, msg.z]
         
     def arm(self):
-        self.get_logger().info("Arm command sent")
+        self.get_logger().info("Arm command sent", throttle_duration_sec=1.0)
         msg = VehicleCommand()
         msg.param1 = 1.0
         msg.command = VehicleCommand.VEHICLE_CMD_COMPONENT_ARM_DISARM
@@ -114,7 +119,7 @@ class OffboardControl(Node):
         self.offboard_control_mode_publisher_.publish(msg)
         
     def engage_offBoard_mode(self):
-        self.get_logger().info('Offboard mode command sent')
+        self.get_logger().info('Offboard mode command sent', throttle_duration_sec=1.0)
         msg = VehicleCommand()
         msg.param1 = 1.0
         msg.param2 = 6.0
@@ -168,18 +173,15 @@ class OffboardControl(Node):
         self.state_publisher.publish(self.offboard_state_msg)
 
         self.get_logger().info(f"State = {self.state.name}, Position = [{x:.3f}, {y:.3f}, {z:.3f}]", throttle_duration_sec=0.25)
+    
     def publish_vehicle_command(self, msg):
         msg.timestamp = int(Clock().now().nanoseconds / 1000)
         self.vehicle_command_publisher_.publish(msg)
 
     def step(self):
         # Arm the vehicle
-        if self.offboard_setpoint_counter_ == 50:
+        if not self.arming_state:
             self.arm()
-            self.offboard_setpoint_counter_ += 1
-            return
-        elif self.offboard_setpoint_counter_ < 50:
-            self.offboard_setpoint_counter_ += 1
             return
 
         # offboard_control_mode needs to be paired with trajectory_setpoint
