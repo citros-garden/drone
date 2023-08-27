@@ -71,12 +71,8 @@ class OffboardControl(Node):
         
         self.nav_state = VehicleStatus.NAVIGATION_STATE_MAX
         self.arming_state = False
-        self.flag_control_offboard_enabled = False
 
-        self.offboard_setpoint_counter_ = 0
         self.bad_tries_to_offboard_counter_ = 0
-
-        # time.sleep(15.0)
 
         self.get_logger().info(f"Loaded Parameters:")
         self.get_logger().info(f"\ttolerance: {self.tolerance}, repeats: {self.repeats}")
