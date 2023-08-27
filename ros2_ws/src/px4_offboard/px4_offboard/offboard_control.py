@@ -76,7 +76,7 @@ class OffboardControl(Node):
     def initialize_variables(self):
         self.position = None
         self.state = State.P1
-        self.position_msg = TrajectorySetpoint()
+        self.target_msg = TrajectorySetpoint()
         self.offboard_state_msg = String()
         self.repeats_counter = 0
         self.nav_state = VehicleStatus.NAVIGATION_STATE_MAX
@@ -121,6 +121,10 @@ class OffboardControl(Node):
         msg.body_rate = False
         msg.timestamp = int(Clock().now().nanoseconds / 1000)
         self.offboard_control_mode_publisher_.publish(msg)
+
+    def publish_vehicle_command(self, msg):
+        msg.timestamp = int(Clock().now().nanoseconds / 1000)
+        self.vehicle_command_publisher_.publish(msg)
         
     def engage_offBoard_mode(self):
         self.get_logger().info('Offboard mode command sent', throttle_duration_sec=1.0)
@@ -166,21 +170,17 @@ class OffboardControl(Node):
             time.sleep(1.0)
             exit()
         
-        self.position_msg.position[0] = current_setpoint[0]
-        self.position_msg.position[1] = current_setpoint[1]
-        self.position_msg.position[2] = current_setpoint[2]
-        self.position_msg.timestamp = int(Clock().now().nanoseconds / 1000)
+        self.target_msg.position[0] = current_setpoint[0]
+        self.target_msg.position[1] = current_setpoint[1]
+        self.target_msg.position[2] = current_setpoint[2]
+        self.target_msg.timestamp = int(Clock().now().nanoseconds / 1000)
 
         self.offboard_state_msg.data = self.state.name
 
-        self.trajectory_setpoint_publisher_.publish(self.position_msg)
+        self.trajectory_setpoint_publisher_.publish(self.target_msg)
         self.state_publisher.publish(self.offboard_state_msg)
 
-        self.get_logger().info(f"State = {self.state.name}, Position = [{x:.3f}, {y:.3f}, {z:.3f}]", throttle_duration_sec=0.25)
-    
-    def publish_vehicle_command(self, msg):
-        msg.timestamp = int(Clock().now().nanoseconds / 1000)
-        self.vehicle_command_publisher_.publish(msg)
+        self.get_logger().info(f"State = {self.state.name}, Position = [{x:.3f}, {y:.3f}, {z:.3f}]", throttle_duration_sec=0.5)
 
     def step(self):
         # Arm the vehicle
