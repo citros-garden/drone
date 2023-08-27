@@ -31,7 +31,6 @@ def wait_for_px4(self):
             pid = process.info['pid']
             self.get_logger().info(f" *** got px4,  pid = {pid}")
             self.capture_external_stdout(pid)
-            break
     except Exception as e:
             print(f"An error occurred: {e}")
 
