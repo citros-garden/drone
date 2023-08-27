@@ -5,6 +5,7 @@ from rclpy.node import Node
 from rclpy.clock import Clock
 from rclpy.qos import QoSProfile, QoSReliabilityPolicy, QoSHistoryPolicy, QoSDurabilityPolicy
 import subprocess
+import psutil
 from enum import Enum
 from std_msgs.msg import String
 from px4_msgs.msg import OffboardControlMode
@@ -67,12 +68,14 @@ class OffboardControl(Node):
         self.repeats_counter = 0
         
         self.nav_state = VehicleStatus.NAVIGATION_STATE_MAX
+        self.arming_state = VehicleStatus.ARMING_STATE_INIT
         self.dt = timer_period
 
         self.offboard_setpoint_counter_ = 0
         self.bad_tries_to_offboard_counter_ = 0
 
-        time.sleep(15)
+        time.sleep(15.0)
+
         self.get_logger().info(f"Loaded Parameters:")
         self.get_logger().info(f"\ttolerance: {self.tolerance}, repeats: {self.repeats}")
 
@@ -80,6 +83,7 @@ class OffboardControl(Node):
  
     def vehicle_status_callback(self, msg):
         self.nav_state = msg.nav_state
+        self.arming_state = msg.arming_state
 
     def local_position_callback(self, msg):
         self.position = [msg.x, msg.y, msg.z]
@@ -168,15 +172,15 @@ class OffboardControl(Node):
         self.state_publisher.publish(self.offboard_state_msg)
 
         self.get_logger().info(f"State = {self.state.name}, Position = [{x:.3f}, {y:.3f}, {z:.3f}]", throttle_duration_sec=0.25)
+    
     def publish_vehicle_command(self, msg):
         msg.timestamp = int(Clock().now().nanoseconds / 1000)
         self.vehicle_command_publisher_.publish(msg)
 
     def step(self):
         # Arm the vehicle
-        if self.offboard_setpoint_counter_ == 50:
+        if self.arming_state != VehicleStatus.ARMING_STATE_ARMED:
             self.arm()
-            self.offboard_setpoint_counter_ += 1
             return
         elif self.offboard_setpoint_counter_ < 50:
             self.offboard_setpoint_counter_ += 1
