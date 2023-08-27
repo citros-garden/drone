@@ -170,9 +170,8 @@ class OffboardControl(Node):
             time.sleep(1.0)
             exit()
         
-        self.target_msg.position[0] = current_setpoint[0]
-        self.target_msg.position[1] = current_setpoint[1]
-        self.target_msg.position[2] = current_setpoint[2]
+        self.target_msg.position = current_setpoint
+        
         self.target_msg.timestamp = int(Clock().now().nanoseconds / 1000)
 
         self.offboard_state_msg.data = self.state.name
