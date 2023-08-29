@@ -47,7 +47,7 @@ offboard_parameters = os.path.join(
 
 config_file = '/workspaces/drone/ros2_ws/src/px4_offboard/launch/config.json'
 iris_parameters_file = '/workspaces/drone/PX4-Autopilot/ROMFS/px4fmu_common/init.d-posix/airframes/10015_gazebo-classic_iris'
-px4_parameters_file = '/workspaces/drone/ros2_ws/src/px4_offboard/config/params.yaml'
+px4_parameters_file = '/workspaces/drone/ros2_ws/src/px4_config/config/params.yaml'
 
 SDFModifier.change_sdf_parameters(config_file)
 PX4Modifier.change_px4_parameters(iris_parameters_file, px4_parameters_file)
