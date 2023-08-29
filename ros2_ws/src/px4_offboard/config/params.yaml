@@ -21,3 +21,64 @@ offboard_control:
   tolerance: 1.0 # [m]
 
   timer_period: 0.02 # [sec] offboard timer 
+
+px4_config:
+ ros__parameters: 
+  MC_PITCHRATE_D: 0.005 # pitch rate d
+  MC_PITCHRATE_I: 0.15 # pitch rate i
+  MC_PITCHRATE_K: 1.0 # pitch rate k
+  MC_PITCHRATE_P: 0.1 # pitch rate p
+  MC_PITCH_P: 6.5 # pitch p
+
+  MC_ROLLRATE_D: 0.005 # roll rate d
+  MC_ROLLRATE_I: 0.15 # roll rate i
+  MC_ROLLRATE_K: 1.0 # roll rate k
+  MC_ROLLRATE_P: 0.1 # roll rate p
+  MC_ROLL_P: 6.5 # roll p
+
+rigid_body:
+ ros__parameters:
+  ixx: 0.029125          # [kg*m^2]
+  iyy: 0.029125          # [kg*m^2]
+  izz: 0.055225          # [kg*m^2]
+  ixy: 0.0               # [kg*m^2] 
+  ixz: 0.0               # [kg*m^2]
+  iyz: 0.0               # [kg*m^2] 
+  mass: 1.5                  # [kg]
+
+imu:
+ ros__parameters:
+  # https://github.com/uuvsimulator/uuv_simulator_docs/blob/master/docs/packages/uuv_simulator/docs/api/gazebo::IMUParameters.md
+  gyroscopeNoiseDensity: 0.00018665 # Gyroscope noise density (two-sided spectrum) [rad/s/sqrt(Hz)].
+  gyroscopeRandomWalk: 3.8785e-05 # Gyroscope bias random walk [rad/s/s/sqrt(Hz)].
+  gyroscopeBiasCorrelationTime: 1000.0 # Gyroscope bias correlation time constant [s].
+  gyroscopeTurnOnBiasSigma: 0.0087 # Gyroscope turn on bias standard deviation [rad/s].
+
+  accelerometerNoiseDensity: 0.001865 # Accelerometer noise density (two-sided spectrum) [m/s^2/sqrt(Hz)].
+  accelerometerRandomWalk: 0.006 # Accelerometer bias random walk. [m/s^2/s/sqrt(Hz)].
+  accelerometerBiasCorrelationTime: 300.0 # Accelerometer bias correlation time constant [s].
+  accelerometerTurnOnBiasSigma: 0.196 # Accelerometer turn on bias standard deviation [m/s^2].
+
+gps:
+ ros__parameters:
+  gpsXYRandomWalk: 2.0
+  gpsZRandomWalk: 4.0
+  gpsXYNoiseDensity: 2.0e-4
+  gpsZNoiseDensity: 4.0e-4
+  gpsVXYNoiseDensity: 0.2
+  gpsVZNoiseDensity: 0.4
+
+world:
+ ros__parameters:
+  windVelocityMean: 4.0
+  windVelocityMax: 20.0
+  windVelocityVariance: 0
+  windDirectionMean: [1, 1, 0]
+  windDirectionVariance: 0
+  windGustStart: 0
+  windGustDuration: 0
+  windGustVelocityMean: 5.0
+  windGustVelocityMax: 20.0
+  windGustVelocityVariance: 0
+  windGustDirectionMean: [1, 0, 0]
+  windGustDirectionVariance: 0

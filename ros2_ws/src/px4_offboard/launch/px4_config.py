@@ -4,8 +4,8 @@ import json
 class Parser():
     def __init__(self):
 
-        self.parameter_file_path = '/workspaces/drone/ros2_ws/src/px4_config/config/params.yaml'
-        self.iris_file_path = '/workspaces/drone/PX4-Autopilot/ROMFS/px4fmu_common/init.d-posix/airframes/10016_gazebo-classic_iris'
+        self.parameter_file_path = '/workspaces/drone/ros2_ws/src/px4_offboard/config/params.yaml'
+        self.iris_file_path = '/workspaces/drone/PX4-Autopilot/ROMFS/px4fmu_common/init.d-posix/airframes/10015_gazebo-classic_iris'
 
         with open(self.parameter_file_path, "r") as stream:
             try:

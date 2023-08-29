@@ -1,7 +1,7 @@
 {
     "rigid_body": 
         {
-            "yaml": "/workspaces/drone/ros2_ws/src/rigid_body_config/config/params.yaml",
+            "yaml": "/workspaces/drone/ros2_ws/src/px4_offboard/config/params.yaml",
             "sdf": "/workspaces/drone/PX4-Autopilot/Tools/simulation/gazebo-classic/sitl_gazebo-classic/models/iris/iris.sdf.jinja",
             "path": 
             {
@@ -17,7 +17,7 @@
               
     "imu": 
         {
-            "yaml": "/workspaces/drone/ros2_ws/src/sensors_config/config/params.yaml",
+            "yaml": "/workspaces/drone/ros2_ws/src/px4_offboard/config/params.yaml",
             "sdf": "/workspaces/drone/PX4-Autopilot/Tools/simulation/gazebo-classic/sitl_gazebo-classic/models/iris/iris.sdf.jinja",
             "path": 
             {
@@ -34,7 +34,7 @@
     
     "gps": 
         {
-            "yaml": "/workspaces/drone/ros2_ws/src/sensors_config/config/params.yaml",
+            "yaml": "/workspaces/drone/ros2_ws/src/px4_offboard/config/params.yaml",
             "sdf": "/workspaces/drone/PX4-Autopilot/Tools/simulation/gazebo-classic/sitl_gazebo-classic/models/gps/gps.sdf",
             "path": 
             {
@@ -50,7 +50,7 @@
     
     "world": 
         {
-            "yaml": "/workspaces/drone/ros2_ws/src/world_config/config/params.yaml",
+            "yaml": "/workspaces/drone/ros2_ws/src/px4_offboard/config/params.yaml",
             "sdf": "/workspaces/drone/PX4-Autopilot/Tools/simulation/gazebo-classic/sitl_gazebo-classic/worlds/windy.world",
             "path": 
             {

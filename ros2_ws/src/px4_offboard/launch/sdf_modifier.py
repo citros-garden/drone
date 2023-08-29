@@ -183,7 +183,7 @@ class Modifier():
                 try:
                     yaml_parameters = yaml.safe_load(stream)[key]['ros__parameters']
                 except yaml.YAMLError as exc:
-                    print(exc)
+                     cls._logger.error(exc)
             for k, v in yaml_parameters.items():
                 try:
                     cls._change_parameter(val["sdf"], val["path"][k], v)
