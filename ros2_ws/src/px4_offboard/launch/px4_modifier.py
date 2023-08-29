@@ -34,7 +34,7 @@ class Modifier():
             "MC_PITCHRATE_I": f"param set-default MC_PITCHRATE_I {yaml_parameters['MC_PITCHRATE_I']}",
             "MC_PITCHRATE_D": f"param set-default MC_PITCHRATE_D {yaml_parameters['MC_PITCHRATE_D']}",
             "MC_PITCHRATE_K": f"param set-default MC_PITCHRATE_K {yaml_parameters['MC_PITCHRATE_K']}",
-            "MC_PITCH_P": f"param set-default MC_PITCH_P: {yaml_parameters['MC_PITCH_P']}",
+            "MC_PITCH_P": f"param set-default MC_PITCH_P {yaml_parameters['MC_PITCH_P']}",
 
             "MC_ROLLRATE_P": f"param set-default MC_ROLLRATE_P {yaml_parameters['MC_ROLLRATE_P']}",
             "MC_ROLLRATE_I": f"param set-default MC_ROLLRATE_I {yaml_parameters['MC_ROLLRATE_I']}",
