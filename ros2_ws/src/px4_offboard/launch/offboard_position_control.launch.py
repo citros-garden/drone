@@ -12,8 +12,8 @@ import sys
 
 sys.path.insert(0,'/workspaces/drone/ros2_ws/src/px4_offboard/launch')
 
-from sdf_modifier import  Modifier
-from px4_config import  Parser as PX4Parser
+from sdf_modifier import  Modifier as SDFModifier
+from px4_modifier import  Modifier as PX4Modifier
 
 class bcolors:
     OKBLUE = '\033[94m'
@@ -45,10 +45,12 @@ offboard_parameters = os.path.join(
     'params.yaml'
     )
 
-Modifier.change_sdf_parameters("/workspaces/drone/ros2_ws/src/px4_offboard/launch/config.json")
+config_file = '/workspaces/drone/ros2_ws/src/px4_offboard/launch/config.json'
+iris_parameters_file = '/workspaces/drone/PX4-Autopilot/ROMFS/px4fmu_common/init.d-posix/airframes/10015_gazebo-classic_iris'
+px4_parameters_file = '/workspaces/drone/ros2_ws/src/px4_offboard/config/params.yaml'
 
-px4_parameter_parser = PX4Parser()
-px4_parameter_parser.parse()
+SDFModifier.change_sdf_parameters(config_file)
+PX4Modifier.change_px4_parameters(iris_parameters_file, px4_parameters_file)
 
 launch.logging.launch_config.level = logging.INFO
 
