@@ -1,9 +1,11 @@
 import yaml
-import json
 import logging
 from typing import List
 
 class Modifier():
+    """
+    A class for modifying and managing parameters in PX4 configuration files using ROS-YAML input.
+    """
     logging.basicConfig(
         level=logging.DEBUG,
         format='%(asctime)s - %(levelname)s - %(message)s',
@@ -14,6 +16,19 @@ class Modifier():
 
     @staticmethod
     def _set_parameters(yaml_parameters: dict) -> dict:
+        """
+    Generate lines for setting PX4 parameters based on the provided YAML parameters.
+
+    Parameters:
+        yaml_parameters (dict): A dictionary containing YAML parameters.
+
+    Returns:
+        dict: A dictionary of lines to set PX4 parameters in the format:
+              {
+                  "parameter_name": "param set-default parameter_name value",
+                  ...
+              }
+        """
         lines_to_be_writter = {
             "MC_PITCHRATE_P": f"param set-default MC_PITCHRATE_P {yaml_parameters['MC_PITCHRATE_P']}",
             "MC_PITCHRATE_I": f"param set-default MC_PITCHRATE_I {yaml_parameters['MC_PITCHRATE_I']}",
@@ -31,6 +46,16 @@ class Modifier():
 
     @staticmethod
     def _parse_px4_yaml(yaml_file_path: str) -> dict:
+        """
+    Parse a PX4 YAML configuration file and extract ROS parameters.
+
+    Parameters:
+        yaml_file_path (str): Path to the PX4 YAML configuration file.
+
+    Returns:
+        dict: A dictionary containing the extracted ROS parameters from the YAML file.
+              An empty dictionary is returned if there is an error during parsing.
+        """
         with open(yaml_file_path, "r") as stream:
             try:
                 parameters_raw = yaml.safe_load(stream)
@@ -42,6 +67,16 @@ class Modifier():
 
     @staticmethod
     def _parse_px4_parameters(parameter_file: str) -> List[str]:
+        """
+    Parse a PX4 parameter file and return its lines as a list.
+
+    Parameters:
+        parameter_file (str): Path to the PX4 parameter file.
+
+    Returns:
+        List[str]: A list of strings representing the lines of the parameter file.
+                   An empty list is returned if there is an error during parsing.
+        """
         try:
             with open(parameter_file) as file:
                 lines = [line.rstrip() for line in file]
@@ -52,10 +87,36 @@ class Modifier():
             
     @staticmethod
     def _check_for_existing_parameters(lines: List[str]) -> int:
-         return any(["PITCH" in x for x in lines])
+        """
+    Check if any of the lines in the list contain the string "PITCH".
+
+    Parameters:
+        lines (List[str]): A list of strings representing lines from a file.
+
+    Returns:
+        bool: True if any line contains the string "PITCH", False otherwise.
+        """
+        return any(["PITCH" in x for x in lines])
     
     @staticmethod 
     def _get_parameters_lines(lines: List[str], lines_to_be_written: dict) -> dict:
+        """
+    Extract information about existing parameter lines that need to be changed.
+
+    Parameters:
+        lines (List[str]): A list of strings representing lines from a file.
+        lines_to_be_written (dict): A dictionary containing lines to be written.
+
+    Returns:
+        dict: A dictionary containing information about parameters to be changed in the format:
+              {
+                  "parameter_name": {
+                      "value": "parameter_value",
+                      "line": line_number
+                  },
+                  ...
+              }
+        """
         parameters = {}
         parameters_to_be_changed = lines_to_be_written.keys()
         for counter, line in enumerate(lines):
@@ -71,7 +132,16 @@ class Modifier():
 
     @classmethod
     def change_px4_parameters(cls, parameter_file: str, yaml_file: str) -> None:
+        """
+    Modify PX4 parameters in a parameter file based on YAML input.
 
+    Parameters:
+        parameter_file (str): Path to the PX4 parameter file to be modified.
+        yaml_file (str): Path to the YAML input file containing parameters.
+
+    Returns:
+        None
+        """
         lines = cls._parse_px4_parameters(parameter_file)
 
         yaml_parameters = cls._parse_px4_yaml(yaml_file)
