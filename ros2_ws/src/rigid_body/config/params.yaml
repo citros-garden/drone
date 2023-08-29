@@ -1,0 +1,9 @@
+rigid_body:
+ ros__parameters:
+  ixx: 0.029125          # [kg*m^2]
+  iyy: 0.029125          # [kg*m^2]
+  izz: 0.055225          # [kg*m^2]
+  ixy: 0.0               # [kg*m^2] 
+  ixz: 0.0               # [kg*m^2]
+  iyz: 0.0               # [kg*m^2] 
+  mass: 1.5                  # [kg]
