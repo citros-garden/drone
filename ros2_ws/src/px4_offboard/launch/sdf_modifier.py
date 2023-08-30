@@ -2,6 +2,7 @@ import xmltodict
 import logging
 import yaml
 import json
+import os
 from typing import List, Union
 
 class Modifier():
@@ -73,6 +74,46 @@ class Modifier():
         except Exception as e:
             Modifier._logger.error(e)
             return {}
+        
+    @staticmethod
+    def _prepare_config_json_yaml_path(config_json: str, citros_sim_run_dir: str) -> None:
+        """
+        Edit the JSON configuration with the correct yaml file path from CITROS.
+
+        Args:
+            config_json (str): Path to the original config.json file.
+            citros_sim_run_dir(str): value of the CITROS_SIM_RUN_DIR environment variable.
+
+        Returns:
+            None.
+        """
+        if citros_sim_run_dir:
+            Modifier._logger.info(f"Detected CITROS_SIM_RUN_DIR at: {citros_sim_run_dir}")
+            yaml_path = citros_sim_run_dir + "/config"
+            rigid_body_path = f"{yaml_path}/rigid_body.yaml"
+            world_path = f"{yaml_path}/world.yaml"
+            imu_path = f"{yaml_path}/sensors.yaml"
+            gps_path = f"{yaml_path}/sensors.yaml"
+        else:
+            Modifier._logger.info(f"Did not detected CITROS_SIM_RUN_DIR, running locally ...")
+            yaml_path = "/workspaces/drone/ros2_ws/src"
+            rigid_body_path = f"{yaml_path}/rigid_body/config/params.yaml"
+            world_path = f"{yaml_path}/world/config/params.yaml"
+            imu_path = f"{yaml_path}/sensors/config/params.yaml"
+            gps_path = f"{yaml_path}/sensors/config/params.yaml"
+            
+        try:
+            with open(config_json, "r") as file:
+                data = json.load(file)
+                data['rigid_body']['yaml'] = rigid_body_path
+                data['world']['yaml'] = world_path
+                data['imu']['yaml'] = imu_path
+                data['gps']['yaml'] = gps_path
+            with open(config_json, 'w') as file:
+                json.dump(data, file, indent=2)
+        except Exception as e:
+            Modifier._logger.error(e)
+        return
     
     @staticmethod
     def _save_sdf(sdf_file_path: str, sdf_dict: dict) -> int:
@@ -141,7 +182,7 @@ class Modifier():
             cls._logger.error("Failed to save the SDF file.")
 
     @classmethod
-    def change_sdf_parameters(cls, config_json: str) -> None:
+    def change_sdf_parameters(cls, config_json: str, citros_sim_run_dir: str) -> None:
         """
     Convert parameters from YAML files and apply them to an SDF file.
 
@@ -153,6 +194,9 @@ class Modifier():
     Args:
         config_json (str): A path to a dictionary containing configuration information.
             Each key is associated with a YAML file path and an SDF structure path.
+
+        citros_sim_run_dir(str): A path to a directory of the CITROS current run. 
+            It's saved as environment variable named CITROS_SIM_RUN_DIR.
 
     Returns:
         None
@@ -178,6 +222,7 @@ class Modifier():
     Raises:
         Exception: If there's an issue with parsing the YAML or updating the SDF.
         """
+        cls._prepare_config_json_yaml_path(config_json, citros_sim_run_dir)
         for key, val in cls._parse_json(config_json).items():
             with open(val["yaml"], "r") as stream:
                 try:

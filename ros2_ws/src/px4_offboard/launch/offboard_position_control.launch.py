@@ -21,6 +21,8 @@ class bcolors:
     FAIL = '\033[91m'
     ENDC = '\033[0m'
     WARNING = '\033[93m'
+
+launch.logging.launch_config.level = logging.INFO
     
 print('''\n\n==============================================
  ██████╗██╗████████╗██████╗  ██████╗ ███████╗
@@ -34,7 +36,7 @@ print('''\n\n==============================================
 try:
 	headless = False if sys.argv[4].split(":=")[1] == 'False' else True
 except:
-	print(f"{bcolors.WARNING}Gazebo mode not selected, running default with GUI{bcolors.ENDC}")
+	print(f"{bcolors.WARNING}Gazebo mode not selected, running default without GUI{bcolors.ENDC}")
 	headless = True
 
 mode = 'HEADLESS=1' if headless else ''
@@ -45,14 +47,18 @@ offboard_parameters = os.path.join(
     'params.yaml'
     )
 
+try:
+    citros_sim_run_dir = os.environ['CITROS_SIM_RUN_DIR']
+    print(f"{bcolors.OKBLUE}CITROS_SIM_RUN_DIR = {citros_sim_run_dir}{bcolors.ENDC}")
+except:
+    citros_sim_run_dir = None
+    print(f"{bcolors.WARNING}CITROS_SIM_RUN_DIR not found, running locally without CITROS?{bcolors.ENDC}")
+
 config_file = '/workspaces/drone/ros2_ws/src/px4_offboard/launch/config.json'
 iris_parameters_file = '/workspaces/drone/PX4-Autopilot/ROMFS/px4fmu_common/init.d-posix/airframes/10015_gazebo-classic_iris'
-px4_parameters_file = '/workspaces/drone/ros2_ws/src/px4_config/config/params.yaml'
 
-SDFModifier.change_sdf_parameters(config_file)
-PX4Modifier.change_px4_parameters(iris_parameters_file, px4_parameters_file)
-
-launch.logging.launch_config.level = logging.INFO
+SDFModifier.change_sdf_parameters(config_file, citros_sim_run_dir)
+PX4Modifier.change_px4_parameters(iris_parameters_file, citros_sim_run_dir)
 
 time.sleep(1.0)
 

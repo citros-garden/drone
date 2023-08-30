@@ -131,20 +131,27 @@ class Modifier():
         return parameters
 
     @classmethod
-    def change_px4_parameters(cls, parameter_file: str, yaml_file: str) -> None:
+    def change_px4_parameters(cls, parameter_file: str, citros_sim_run_dir: str) -> None:
         """
-    Modify PX4 parameters in a parameter file based on YAML input.
+        Modify PX4 parameters in a parameter file based on YAML input.
 
-    Parameters:
-        parameter_file (str): Path to the PX4 parameter file to be modified.
-        yaml_file (str): Path to the YAML input file containing parameters.
+        Parameters:
+            parameter_file (str): Path to the PX4 parameter file to be modified.
+            citros_sim_run_dir (str): Path to the YAML input file containing parameters.
 
-    Returns:
-        None
+        Returns:
+            None
         """
+
+        if citros_sim_run_dir:
+            px4_parameters_file = f'{citros_sim_run_dir}/config/px4_config.yaml'
+            Modifier._logger.debug(f"Detected CITROS_SIM_RUN_DIR at: {citros_sim_run_dir}")
+        else:
+            px4_parameters_file = '/workspaces/drone/ros2_ws/src/px4_config/config/params.yaml'
+
         lines = cls._parse_px4_parameters(parameter_file)
 
-        yaml_parameters = cls._parse_px4_yaml(yaml_file)
+        yaml_parameters = cls._parse_px4_yaml(px4_parameters_file)
         lines_to_be_written = cls._set_parameters(yaml_parameters)
 
         if cls._check_for_existing_parameters(lines):
