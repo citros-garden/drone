@@ -45,12 +45,16 @@ offboard_parameters = os.path.join(
     'params.yaml'
     )
 
+try:
+    citros_sim_run_dir = os.environ['CITROS_SIM_RUN_DIR']
+except:
+    citros_sim_run_dir = None
+
 config_file = '/workspaces/drone/ros2_ws/src/px4_offboard/launch/config.json'
 iris_parameters_file = '/workspaces/drone/PX4-Autopilot/ROMFS/px4fmu_common/init.d-posix/airframes/10015_gazebo-classic_iris'
-px4_parameters_file = '/workspaces/drone/ros2_ws/src/px4_config/config/params.yaml'
 
-SDFModifier.change_sdf_parameters(config_file)
-PX4Modifier.change_px4_parameters(iris_parameters_file, px4_parameters_file)
+SDFModifier.change_sdf_parameters(config_file, citros_sim_run_dir)
+PX4Modifier.change_px4_parameters(iris_parameters_file, citros_sim_run_dir)
 
 launch.logging.launch_config.level = logging.INFO
 
