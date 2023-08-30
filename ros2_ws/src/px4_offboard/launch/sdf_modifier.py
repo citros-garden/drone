@@ -88,19 +88,31 @@ class Modifier():
             None.
         """
         if citros_sim_run_dir:
-            Modifier._logger.debug(f"Detected CITROS_SIM_RUN_DIR at: {citros_sim_run_dir}")
+            Modifier._logger.info(f"Detected CITROS_SIM_RUN_DIR at: {citros_sim_run_dir}")
             yaml_path = citros_sim_run_dir + "/config"
-            try:
-                with open(config_json, "r") as file:
-                    data = json.load(file)
-                    data['rigid_body']['yaml'] = f"{yaml_path}/rigid_body.yaml"
-                    data['world']['yaml'] = f"{yaml_path}/world.yaml"
-                    data['imu']['yaml'] = f"{yaml_path}/sensors.yaml"
-                    data['gps']['yaml'] = f"{yaml_path}/sensors.yaml"
-                with open(config_json, 'w') as file:
-                    json.dump(data, file, indent=2)
-            except Exception as e:
-                Modifier._logger.error(e)
+            rigid_body_path = f"{yaml_path}/rigid_body.yaml"
+            world_path = f"{yaml_path}/world.yaml"
+            imu_path = f"{yaml_path}/sensors.yaml"
+            gps_path = f"{yaml_path}/sensors.yaml"
+        else:
+            Modifier._logger.info(f"Did not detected CITROS_SIM_RUN_DIR, running locally ...")
+            yaml_path = "/workspaces/drone/ros2_ws/src"
+            rigid_body_path = f"{yaml_path}/rigid_body/config/params.yaml"
+            world_path = f"{yaml_path}/world/config/params.yaml"
+            imu_path = f"{yaml_path}/sensors/config/params.yaml"
+            gps_path = f"{yaml_path}/sensors/config/params.yaml"
+            
+        try:
+            with open(config_json, "r") as file:
+                data = json.load(file)
+                data['rigid_body']['yaml'] = rigid_body_path
+                data['world']['yaml'] = world_path
+                data['imu']['yaml'] = imu_path
+                data['gps']['yaml'] = gps_path
+            with open(config_json, 'w') as file:
+                json.dump(data, file, indent=2)
+        except Exception as e:
+            Modifier._logger.error(e)
         return
     
     @staticmethod
