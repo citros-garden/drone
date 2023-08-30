@@ -19,6 +19,10 @@ class Modifier():
         None
 
     Methods:
+        _prepare_config_json_yaml_path(config_json, citros_sim_run_dir):
+            Change the "yaml" value in the config_json according to the CITROS_SIM_RUN_DIR
+            environment variable.
+
         _parse_json(config_json):
             Parse a JSON file and return the parsed content as a dictionary.
 
