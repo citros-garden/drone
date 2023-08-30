@@ -21,6 +21,8 @@ class bcolors:
     FAIL = '\033[91m'
     ENDC = '\033[0m'
     WARNING = '\033[93m'
+
+launch.logging.launch_config.level = logging.INFO
     
 print('''\n\n==============================================
  ██████╗██╗████████╗██████╗  ██████╗ ███████╗
@@ -47,16 +49,16 @@ offboard_parameters = os.path.join(
 
 try:
     citros_sim_run_dir = os.environ['CITROS_SIM_RUN_DIR']
+    print(f"{bcolors.OKBLUE}CITROS_SIM_RUN_DIR = {citros_sim_run_dir}{bcolors.ENDC}")
 except:
     citros_sim_run_dir = None
+    print(f"{bcolors.WARNING}CITROS_SIM_RUN_DIR not found, running locally without CITROS?{bcolors.ENDC}")
 
 config_file = '/workspaces/drone/ros2_ws/src/px4_offboard/launch/config.json'
 iris_parameters_file = '/workspaces/drone/PX4-Autopilot/ROMFS/px4fmu_common/init.d-posix/airframes/10015_gazebo-classic_iris'
 
 SDFModifier.change_sdf_parameters(config_file, citros_sim_run_dir)
 PX4Modifier.change_px4_parameters(iris_parameters_file, citros_sim_run_dir)
-
-launch.logging.launch_config.level = logging.INFO
 
 time.sleep(1.0)
 
