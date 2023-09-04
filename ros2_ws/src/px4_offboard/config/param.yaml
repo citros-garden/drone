@@ -1,4 +1,4 @@
-offboard_control:
+px4_offboard:
  ros__parameters:
   p1_x: 0.0  # x position [m] of point 1, NED
   p1_y: 0.0  # y position [m] of point 1, NED

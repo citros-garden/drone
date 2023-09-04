@@ -57,20 +57,20 @@ class OffboardControl(Node):
     def initialize_parameters(self):
         self.declare_parameters(
             namespace='',
-            parameters=[('p1_x', 0.0), ('p1_y', 0.0), ('p1_z', -10.0),
+            parameters=[('p1_x', 0.0), ('p1_y', 0.0), ('p1_z', -30.0),
                         ('p2_x', 10.0), ('p2_y', 0.0), ('p2_z', -10.0),
                         ('p3_x', 10.0), ('p3_y', 10.0), ('p3_z', -10.0),
                         ('p4_x', 0.0), ('p4_y', 10.0), ('p4_z', -10.0),
-                        ('repeats', 5), ('tolerance', 0.5), ('timer_period', 0.02),]
+                        ('repeats', 2), ('tolerance', 0.5), ('timer_period', 0.02),]
         )
-        self.setpoints = {"P1": [self.get_parameter('p1_x').value, self.get_parameter('p1_y').value, self.get_parameter('p1_z').value],
-                          "P2": [self.get_parameter('p2_x').value, self.get_parameter('p2_y').value, self.get_parameter('p2_z').value],
-                          "P3": [self.get_parameter('p3_x').value, self.get_parameter('p3_y').value, self.get_parameter('p3_z').value],
-                          "P4": [self.get_parameter('p4_x').value, self.get_parameter('p4_y').value, self.get_parameter('p4_z').value],
+        self.setpoints = {"P1": [self.get_parameter('p1_x').get_parameter_value().double_value, self.get_parameter('p1_y').get_parameter_value().double_value, self.get_parameter('p1_z').get_parameter_value().double_value],
+                          "P2": [self.get_parameter('p2_x').get_parameter_value().double_value, self.get_parameter('p2_y').get_parameter_value().double_value, self.get_parameter('p2_z').get_parameter_value().double_value],
+                          "P3": [self.get_parameter('p3_x').get_parameter_value().double_value, self.get_parameter('p3_y').get_parameter_value().double_value, self.get_parameter('p3_z').get_parameter_value().double_value],
+                          "P4": [self.get_parameter('p4_x').get_parameter_value().double_value, self.get_parameter('p4_y').get_parameter_value().double_value, self.get_parameter('p4_z').get_parameter_value().double_value],
                           "LAND": [0.0, 0.0, 0.0]}
-        self.timer_period = self.get_parameter('timer_period').value
-        self.tolerance = self.get_parameter('tolerance').value
-        self.repeats = self.get_parameter('repeats').value
+        self.timer_period = self.get_parameter('timer_period').get_parameter_value().double_value
+        self.tolerance = self.get_parameter('tolerance').get_parameter_value().double_value
+        self.repeats = self.get_parameter('repeats').get_parameter_value().double_value
 
     def initialize_variables(self):
         self.position = None

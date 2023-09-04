@@ -24,7 +24,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-                'offboard_control = px4_offboard.offboard_control:main'
+                'px4_offboard = px4_offboard.offboard_control:main'
         ],
     },
 )
