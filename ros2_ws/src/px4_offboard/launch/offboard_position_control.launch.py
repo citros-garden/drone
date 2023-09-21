@@ -90,10 +90,6 @@ def generate_launch_description():
         arguments=['udp4', '--port', '8888']
     )
 
-    recorder = ExecuteProcess(
-        cmd=['ros2', 'bag', 'record', '-a', '-s', 'mcap','-o', f'db/{time.strftime("%Y-%m-%d_%H:%M:%S", time.gmtime())}'],
-	)
-
     sys_shut_down = RegisterEventHandler(OnProcessExit(
 		target_action=node_offboard,
         on_exit=[
@@ -106,5 +102,5 @@ def generate_launch_description():
     bridge_dir = get_package_share_directory('rosbridge_server')
     node_rosbridge =  IncludeLaunchDescription(launch_description_sources.FrontendLaunchDescriptionSource(bridge_dir + '/launch/rosbridge_websocket_launch.xml'))
 
-    ld = LaunchDescription([proc_px4, node_offboard, node_dds_agent, node_rosbridge,recorder, sys_shut_down])
+    ld = LaunchDescription([proc_px4, node_offboard, node_dds_agent, node_rosbridge, sys_shut_down])
     return ld
