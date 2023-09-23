@@ -73,6 +73,10 @@ COPY ros2_entrypoint.sh ros2_entrypoint.sh
 RUN chmod +x ros2_entrypoint.sh
 RUN pip install xmltodict
 
+RUN apt update && apt-get install -y ros-humble-rosbag2-storage-mcap
+
+RUN pip install citros
+
 RUN echo "source /workspaces/drone/ros2_ws/install/local_setup.bash" >> /home/$USERNAME/.bashrc
 
 ENTRYPOINT ["/workspaces/drone/ros2_entrypoint.sh"]
