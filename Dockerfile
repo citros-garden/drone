@@ -75,7 +75,7 @@ RUN pip install xmltodict
 
 RUN apt update && apt-get install -y ros-humble-rosbag2-storage-mcap
 
-RUN pip install citros
+RUN pip install citros==1.2.25
 
 RUN echo "source /workspaces/drone/ros2_ws/install/local_setup.bash" >> /home/$USERNAME/.bashrc
 
