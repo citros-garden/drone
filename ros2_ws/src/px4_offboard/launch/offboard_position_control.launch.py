@@ -61,6 +61,9 @@ SDFModifier.change_sdf_parameters(config_file, citros_sim_run_dir)
 PX4Modifier.change_px4_parameters(iris_parameters_file, citros_sim_run_dir)
 PX4Modifier.replace_dds_topics_yaml()
 
+if not os.path.exists('/tmp/px4'):
+    os.makedirs('/tmp/px4')
+
 time.sleep(1.0)
 
 def generate_launch_description():
