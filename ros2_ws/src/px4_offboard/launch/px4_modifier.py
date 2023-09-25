@@ -172,6 +172,12 @@ class Modifier():
             with open(parameter_file, "a") as file:
                 for k, v in lines_to_be_written.items():
                     file.write('\n' + v)
+
+    @staticmethod
+    def replace_dds_topics_yaml():
+        import shutil
+        shutil.copy2('/workspaces/drone/ros2_ws/src/px4_offboard/launch/dds_topics.yaml',
+                     '/workspaces/drone/PX4-Autopilot/src/modules/uxrce_dds_client/dds_topics.yaml')
          
 def main():
      parameter_file = '/workspaces/drone/ros2_ws/src/px4_offboard/launch/10015_gazebo-classic_iris'
