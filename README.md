@@ -52,7 +52,8 @@ Run a GUI simulation:
                 ros2 launch px4_offboard offboard_position_control.launch.py headless:=False
 
 # Develop :bulb:
-instruction to further develop the simulation.
+Currently, the [px4_offboard](ros2_ws/src/px4_offboard/) package contains a node which sends rectangular waypoints to the drone. The 4 waypoints are located in the package's [parameters](ros2_ws/src/px4_offboard/config/params.yaml).
 
-# Extras :eyes:
-Images / Videos from Foxglove
+
+# Foxglove Visualization :eyes:
+![](img/foxglove.gif)
