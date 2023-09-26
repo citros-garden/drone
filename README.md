@@ -1,35 +1,59 @@
-# CITROS Simulation with PX4
+# General Information 🌍
 
-exposing different parameters for PX4 SITL (Gazebo and ROS2 with XRCE-DDS) to CITROS
+![](img/drone.jpeg)
 
-# Install
+This repository contains an example of a ROS 2 node which communicate with a drone using PX4 and ROS 2.
+Communication via uXRCE-DDS (PX4 version `1.14.0`).
 
-Clone the repository:
+The repository contains launch file which launch:
+1. Gazebo simulation (headless / gui options available).
+2. A PX4 instans which control the simulated drone.
+3. DDS agent for ROS 2 - PX4 communication.
+4. An Offboard node which sends setpoints for the control system.
 
-             git clone git@github.com:citros-garden/drone.git
+# Installation 🛫
 
-Open the repository with VSCode and then `reopen in container`. the `devcontainer` contains all the development requirements.
+Clone the repository from Github:
 
-# Run
+                https://github.com/citros-garden/drone.git
 
-Use the pre-configure VSCode tasks to `build` and `launch` the simulation.
+Then open the repository in VSCode's `devcontainer` with `reopen in container option`.
+The [Dockerfile](.devcontainer/Dockerfile) contains all the necessary dependencies for the project, and the 
+[install](.devcontainer/install.sh) script will clone PX4-Autopilot and build the firmware, along with building ROS 2 workspace.
 
-# Dockers
+# Pre-defined VSCode Tasks 📝
 
-build:
+This repository contains pre-defined [VSCode tasks](.vscode/tasks.json) which are helpful for building and running the example.
+They can be run by typing `ctrl+p`. In the drop-down menu type `task ` (space after task) and you should see them appear.
 
-        docker build -t drone .
+The following tasks are available:
 
-run:
+1. `build` - building the ROS 2 workspace
+2. `launch` - launch the simulation in `headless` mode.
+3. `launch-gui` - launch the simulation in `GUI` mode.
 
-        docker run --rm -it drone ros2 launch px4_offboard offboard_position_control.launch.py
+**Note**: The `launch` and `launch-gui` commands are depend on the `build`, so when you launch with task, a build task will run before launch.
 
-# CITROS:
 
-                citros login
-                citros sync
+## Manually Build 🚜
+Build and source the ROS 2 workspace with:
 
-                citros docker-login
-                docker tag drone us-central1-docker.pkg.dev/citros/lulav/drone
-                docker push us-central1-docker.pkg.dev/citros/lulav/drone
+        cd ros2_ws
+        colcon build
+        source install/local_setup.bash
 
+## Manually Run 🚀
+Run a headless simulation:
+
+                ros2 launch px4_offboard offboard_position_control.launch.py headless:=True
+
+Run a GUI simulation:
+
+                ros2 launch px4_offboard offboard_position_control.launch.py headless:=False
+
+# Develop :bulb:
+Currently, the [px4_offboard](ros2_ws/src/px4_offboard/) package contains a node which sends rectangular waypoints to the drone. The 4 waypoints are located in the package's [parameters](ros2_ws/src/px4_offboard/config/params.yaml).
+
+
+# Foxglove Visualization :eyes:
+![](img/foxglove.gif)
