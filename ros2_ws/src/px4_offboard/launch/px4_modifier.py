@@ -178,6 +178,27 @@ class Modifier():
         import shutil
         shutil.copy2('/workspaces/drone/ros2_ws/src/px4_offboard/launch/dds_topics.yaml',
                      '/workspaces/drone/PX4-Autopilot/src/modules/uxrce_dds_client/dds_topics.yaml')
+        
+    @staticmethod
+    def create_px4_folder():
+        import os
+        if not os.path.exists('/tmp/px4'):
+            os.makedirs('/tmp/px4')
+
+    @staticmethod
+    def change_dds_qos_profile():
+        filename = '/workspaces/drone/PX4-Autopilot/src/modules/uxrce_dds_client/utilities.hpp'
+
+        # Read the content of the file
+        with open(filename, 'r') as file:
+            content = file.read()
+
+        # Replace the desired string
+        updated_content = content.replace('UXR_RELIABILITY_BEST_EFFORT', 'UXR_RELIABILITY_RELIABLE')
+
+        # Write the updated content back to the file
+        with open(filename, 'w') as file:
+            file.write(updated_content)
          
 def main():
      parameter_file = '/workspaces/drone/ros2_ws/src/px4_offboard/launch/10015_gazebo-classic_iris'
