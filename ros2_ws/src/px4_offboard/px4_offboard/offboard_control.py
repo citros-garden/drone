@@ -37,7 +37,7 @@ class OffboardControl(Node):
     @staticmethod
     def create_qos_profile():
         qos_profile = QoSProfile(
-            reliability=QoSReliabilityPolicy.BEST_EFFORT ,
+            reliability=QoSReliabilityPolicy.RELIABLE ,
             durability=QoSDurabilityPolicy.TRANSIENT_LOCAL,
             history=QoSHistoryPolicy.KEEP_LAST,
             depth=1

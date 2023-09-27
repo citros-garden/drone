@@ -1,6 +1,6 @@
 {
   "rigid_body": {
-    "yaml": "/workspaces/drone/ros2_ws/src/rigid_body/config/params.yaml",
+    "yaml": "/workspaces/drone/.citros/runs/simulation_offboard_position_control/test_5/0/config/rigid_body.yaml",
     "sdf": "/workspaces/drone/PX4-Autopilot/Tools/simulation/gazebo-classic/sitl_gazebo-classic/models/iris/iris.sdf.jinja",
     "path": {
       "ixx": [
@@ -68,7 +68,7 @@
     }
   },
   "imu": {
-    "yaml": "/workspaces/drone/ros2_ws/src/sensors/config/params.yaml",
+    "yaml": "/workspaces/drone/.citros/runs/simulation_offboard_position_control/test_5/0/config/sensors.yaml",
     "sdf": "/workspaces/drone/PX4-Autopilot/Tools/simulation/gazebo-classic/sitl_gazebo-classic/models/iris/iris.sdf.jinja",
     "path": {
       "gyroscopeNoiseDensity": [
@@ -130,7 +130,7 @@
     }
   },
   "gps": {
-    "yaml": "/workspaces/drone/ros2_ws/src/sensors/config/params.yaml",
+    "yaml": "/workspaces/drone/.citros/runs/simulation_offboard_position_control/test_5/0/config/sensors.yaml",
     "sdf": "/workspaces/drone/PX4-Autopilot/Tools/simulation/gazebo-classic/sitl_gazebo-classic/models/gps/gps.sdf",
     "path": {
       "gpsNoise": [
@@ -192,7 +192,7 @@
     }
   },
   "world": {
-    "yaml": "/workspaces/drone/ros2_ws/src/world/config/params.yaml",
+    "yaml": "/workspaces/drone/.citros/runs/simulation_offboard_position_control/test_5/0/config/world.yaml",
     "sdf": "/workspaces/drone/PX4-Autopilot/Tools/simulation/gazebo-classic/sitl_gazebo-classic/worlds/windy.world",
     "path": {
       "windVelocityMean": [
