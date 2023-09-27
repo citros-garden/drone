@@ -58,11 +58,12 @@ config_file = '/workspaces/drone/ros2_ws/src/px4_offboard/launch/config.json'
 iris_parameters_file = '/workspaces/drone/PX4-Autopilot/ROMFS/px4fmu_common/init.d-posix/airframes/10015_gazebo-classic_iris'
 
 SDFModifier.change_sdf_parameters(config_file, citros_sim_run_dir)
-PX4Modifier.change_px4_parameters(iris_parameters_file, citros_sim_run_dir)
-PX4Modifier.replace_dds_topics_yaml()
 
-if not os.path.exists('/tmp/px4'):
-    os.makedirs('/tmp/px4')
+PX4Modifier.change_px4_parameters(iris_parameters_file, citros_sim_run_dir)
+
+PX4Modifier.change_dds_qos_profile()
+PX4Modifier.replace_dds_topics_yaml()
+PX4Modifier.create_px4_folder()
 
 time.sleep(1.0)
 

@@ -10,6 +10,7 @@ git submodule update --init --recursive
 
 # Installing all PX4 deps and build SITL
 Tools/setup/ubuntu.sh --no-nuttx
+python3 /workspaces/drone/.devcontainer/px4_setup.py
 DONT_RUN=1 make px4_sitl gazebo
 
 # Installing Gazebo

@@ -53,20 +53,30 @@ RUN pip install setuptools==58.2.0 citros
 WORKDIR /workspaces/drone
 
 # install and build px4
-RUN git clone -b release/1.14 https://github.com/PX4/PX4-Autopilot.git
-RUN cd PX4-Autopilot/ &&  git submodule update --init --recursive
-RUN PX4-Autopilot/Tools/setup/ubuntu.sh --no-nuttx
-RUN apt-get update && apt-get install -y gazebo && \
-    cd PX4-Autopilot/ && \
-    DONT_RUN=1 make px4_sitl gazebo-classic && \
-    DONT_RUN=1 make px4_sitl gazebo-classic
-RUN mkdir /tmp/px4
+# RUN git clone -b release/1.14 https://github.com/PX4/PX4-Autopilot.git
+# RUN cd PX4-Autopilot/ &&  git submodule update --init --recursive
+# RUN PX4-Autopilot/Tools/setup/ubuntu.sh --no-nuttx
+# RUN apt-get update && apt-get install -y gazebo && \
+#     cd PX4-Autopilot/ && \
+#     DONT_RUN=1 make px4_sitl gazebo-classic && \
+#     DONT_RUN=1 make px4_sitl gazebo-classic
 
 # build ros workspace
 COPY ros2_ws/src ros2_ws/src
 RUN  . /opt/ros/${ROS_DISTRO}/setup.sh && \
      cd ros2_ws && \
      colcon build
+
+# set up px4
+COPY PX4-Autopilot PX4-Autopilot
+RUN PX4-Autopilot/Tools/setup/ubuntu.sh --no-nuttx
+COPY .devcontainer/px4_setup.py .devcontainer/px4_setup.py
+RUN python3 /workspaces/drone/.devcontainer/px4_setup.py
+RUN apt-get update && apt-get install -y gazebo && \
+    cd PX4-Autopilot/ && \
+    make clean && \
+    DONT_RUN=1 make -j12 px4_sitl gazebo-classic && \
+    DONT_RUN=1 make -j12 px4_sitl gazebo-classic
 
 # finial setup
 COPY ros2_entrypoint.sh ros2_entrypoint.sh
@@ -75,7 +85,7 @@ RUN pip install xmltodict
 
 RUN apt update && apt-get install -y ros-humble-rosbag2-storage-mcap
 
-RUN pip install citros==1.2.25
+RUN pip install citros==1.2.26
 
 RUN echo "source /workspaces/drone/ros2_ws/install/local_setup.bash" >> /home/$USERNAME/.bashrc
 
