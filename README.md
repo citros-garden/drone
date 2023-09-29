@@ -54,6 +54,15 @@ Run a GUI simulation:
 # Develop :bulb:
 Currently, the [px4_offboard](ros2_ws/src/px4_offboard/) package contains a node which sends rectangular waypoints to the drone. The 4 waypoints are located in the package's [parameters](ros2_ws/src/px4_offboard/config/params.yaml).
 
+## XRCE-DDS Modification
+- By default, XRCE-DDS comes with non-ROS 2 default QOS profile. In order to subscribe to the PX4 topics, both in the offboard node and the ROS 2 bag, we changed the XRCE-DDS QOS profile before compiling the PX4 firmware.
+
+- Some PX4 topics has been removed from the [dds_topics.yaml](PX4-Autopilot/src/modules/uxrce_dds_client/dds_topics.yaml)
 
 # Foxglove Visualization :eyes:
 ![](img/foxglove.gif)
+
+# Related Projects
+1. [PX4-Autopilot](https://github.com/PX4/PX4-Autopilot)
+2. [px4_offboard](https://github.com/Jaeyoung-Lim/px4-offboard)
+3. [XRCE-DDS](https://github.com/eProsima/Micro-XRCE-DDS-Client)

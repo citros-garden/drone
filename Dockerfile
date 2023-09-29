@@ -52,15 +52,6 @@ RUN pip install setuptools==58.2.0 citros
 # define the workdir
 WORKDIR /workspaces/drone
 
-# install and build px4
-# RUN git clone -b release/1.14 https://github.com/PX4/PX4-Autopilot.git
-# RUN cd PX4-Autopilot/ &&  git submodule update --init --recursive
-# RUN PX4-Autopilot/Tools/setup/ubuntu.sh --no-nuttx
-# RUN apt-get update && apt-get install -y gazebo && \
-#     cd PX4-Autopilot/ && \
-#     DONT_RUN=1 make px4_sitl gazebo-classic && \
-#     DONT_RUN=1 make px4_sitl gazebo-classic
-
 # build ros workspace
 COPY ros2_ws/src ros2_ws/src
 RUN  . /opt/ros/${ROS_DISTRO}/setup.sh && \
@@ -85,7 +76,7 @@ RUN pip install xmltodict
 
 RUN apt update && apt-get install -y ros-humble-rosbag2-storage-mcap
 
-RUN pip install citros==1.2.26
+RUN pip install citros==1.2.28
 
 RUN echo "source /workspaces/drone/ros2_ws/install/local_setup.bash" >> /home/$USERNAME/.bashrc
 

@@ -10,7 +10,9 @@ git submodule update --init --recursive
 
 # Installing all PX4 deps and build SITL
 Tools/setup/ubuntu.sh --no-nuttx
+# change default dds settings
 python3 /workspaces/drone/.devcontainer/px4_setup.py
+# build
 DONT_RUN=1 make px4_sitl gazebo
 
 # Installing Gazebo
@@ -28,6 +30,9 @@ colcon build
 cd ..
 sudo mkdir /tmp/px4
 echo "source ros2_ws/install/local_setup.bash" >> ~/.bashrc
+
+# ignore changes in the config file
+git update-index --assume-unchange ros2_ws/src/px4_offboard/launch/config.json
 
 echo "
 # ==============================================
