@@ -40,7 +40,10 @@ class Modifier():
             "MC_ROLLRATE_I": f"param set-default MC_ROLLRATE_I {yaml_parameters['MC_ROLLRATE_I']}",
             "MC_ROLLRATE_D": f"param set-default MC_ROLLRATE_D {yaml_parameters['MC_ROLLRATE_D']}",
             "MC_ROLLRATE_K": f"param set-default MC_ROLLRATE_K {yaml_parameters['MC_ROLLRATE_K']}",
-            "MC_ROLL_P": f"param set-default MC_ROLL_P {yaml_parameters['MC_ROLL_P']}"
+            "MC_ROLL_P": f"param set-default MC_ROLL_P {yaml_parameters['MC_ROLL_P']}",
+
+            "EKF2_GPS_P_NOISE": f"param set-default EKF2_GPS_P_NOISE {yaml_parameters['EKF2_GPS_P_NOISE']}",
+            "EKF2_GPS_V_NOISE": f"param set-default EKF2_GPS_V_NOISE {yaml_parameters['EKF2_GPS_V_NOISE']}",
         }
         return lines_to_be_writter
 
